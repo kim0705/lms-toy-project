@@ -1,0 +1,12 @@
+# DB 연결 정보
+spring:
+  profiles:
+    include: application-secret.yml
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lms_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+# MyBatis 설정
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
