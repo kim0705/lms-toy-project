@@ -19,5 +19,5 @@
 
 ### 🚀 Workflow
 1. Issue를 생성한다.
-2. `feature/#이슈번호` 브랜치를 생성하여 작업한다.
+2. `feature/branch설명-이슈번호` 브랜치를 생성하여 작업한다.
 3. 작업 완료 후 `develop` 브랜치로 PR을 보낸다.

@@ -1,7 +1,6 @@
 package com.lms.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * [학과 엔티티]
@@ -10,6 +9,8 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Department extends CommonInfo{
     private int id;
     private String deptName;
