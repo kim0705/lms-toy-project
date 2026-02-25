@@ -2,6 +2,8 @@ import React from 'react';
 import * as S from './style';
 import { FaBook, FaChartBar, FaBullhorn, FaThLarge, FaArrowLeft, FaUserCircle } from 'react-icons/fa';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getEnrollmentList } from '../../api/enrollmentApi';
+import { useQuery } from '@tanstack/react-query';
 
 function Sidebar() {
     const location = useLocation();
@@ -10,17 +12,20 @@ function Sidebar() {
 
     const isInCourse = location.pathname.includes('/course/');
 
-    const coursesList = [
-        { id: '1', name: 'React 초급 마스터' },
-        { id: '2', name: 'Node.js 백엔드 입문' },
-        { id: '3', name: 'UI/UX 디자인 원론' },
-    ];
-
     const menuList = [
         { name: '강의수강', path: `/course/${courseId}/study`, icon: <FaBook /> },
         { name: '리포트', path: `/course/${courseId}/report`, icon: <FaChartBar /> },
         { name: '공지사항', path: `/course/${courseId}/notice`, icon: <FaBullhorn /> },
     ];
+
+    const studentId = 1;
+
+    /* 학생 수강 목록 가져오기 */
+    const { data: coursesList } = useQuery({
+        queryKey: ['courses', studentId],
+        queryFn: () => getEnrollmentList(studentId),
+        enabled: !!studentId,
+    })
 
     return (
         <S.SidebarContainer>
@@ -42,12 +47,12 @@ function Sidebar() {
                         </S.MenuLink>
 
                         <S.SectionTitle>내 수강 과목</S.SectionTitle>
-                        {coursesList.map((course) => (
+                        {coursesList?.map((course) => (
                             <S.CourseItem
-                                key={course.id}
-                                onClick={() => navigate(`/course/${course.id}/study`)}
+                                key={course.courseId}
+                                onClick={() => navigate(`/course/${course.courseId}/study`)}
                             >
-                                <FaBook /> <span>{course.name}</span>
+                                <FaBook /> <span>{course.courseTitle}</span>
                             </S.CourseItem>
                         ))}
                     </>
@@ -67,8 +72,8 @@ function Sidebar() {
                                 value={courseId}
                                 onChange={(e) => navigate(`/course/${e.target.value}/study`)}
                             >
-                                {coursesList.map(course => (
-                                    <option key={course.id} value={course.id}>{course.name}</option>
+                                {coursesList?.map(course => (
+                                    <option key={course.courseId} value={course.courseId}>{course.courseTitle}</option>
                                 ))}
                             </select>
                         </S.CourseSelectWrapper>
