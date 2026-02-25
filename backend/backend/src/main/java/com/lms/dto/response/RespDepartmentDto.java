@@ -19,5 +19,6 @@ public class RespDepartmentDto extends CommonInfoDto {
                 .id(department.getId())
                 .deptName(department.getDeptName())
                 .build();
+
     }
 }

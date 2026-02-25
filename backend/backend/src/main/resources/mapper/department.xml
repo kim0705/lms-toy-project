@@ -3,11 +3,10 @@
 
 <mapper namespace="com.lms.mapper.DepartmentMapper">
 
-    <!-- 학생ID를 이용한 학과 조회 -->
     <select id="selectDepartmentById" resultType="com.lms.entity.Department">
-        SELECT ID
-             , DEPT_NAME
-          FROM DEPARTMENTS
-         WHERE ID = #{studentId}
+        select id
+             , dept_name as deptName
+          from departments
+         where id = #{id}
     </select>
 </mapper>
