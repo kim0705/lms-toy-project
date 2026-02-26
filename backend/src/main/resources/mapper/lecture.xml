@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lms.mapper.LectureMapper">
+
+    <!-- 주차별 강의 정보 조회 -->
+    <select id="selectLectureInfoByWeek" resultType="com.lms.entity.Lecture">
+        SELECT T1.ID
+             , T1.TITLE
+             , T1.WEEK
+             , T1.CHAPTER
+             , T1.VIDEO_URL
+             , T1.REQ_TIME
+             , T1.START_DT
+             , T1.END_DT
+          FROM LECTURES T1
+          INNER JOIN COURSES T2
+              ON T1.COURSE_ID = T2.ID
+         WHERE T1.COURSE_ID = #{courseId}
+           AND T1.WEEK = #{week}
+        ORDER BY T1.CHAPTER ASC
+    </select>
+</mapper>

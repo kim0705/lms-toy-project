@@ -1,0 +1,29 @@
+# DB 연결 정보
+spring:
+  profiles:
+    include: secret
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lms?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+# MyBatis 설정
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 로그 설정
+logging:
+  level:
+    root: info
+    com.lms.mapper: debug
+
+# Swagger(SpringDoc) 설정
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: asc
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs

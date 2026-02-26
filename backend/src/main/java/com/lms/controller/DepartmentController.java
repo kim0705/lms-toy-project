@@ -18,12 +18,12 @@ public class DepartmentController {
 
     /**
      * [학과 조회]
-     * GET http://localhost:8080/api/departments/{id}
+     * GET http://localhost:8080/api/departments/{studentId}
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<RespDepartmentDto> getDepartmentInfo(@PathVariable int id) {
+    @GetMapping("/{studentId}")
+    public ResponseEntity<RespDepartmentDto> getDepartmentInfo(@PathVariable int studentId) {
 
-        RespDepartmentDto response = departmentService.findDepartmentById(id);
+        RespDepartmentDto response = departmentService.findDepartmentById(studentId);
 
         return ResponseEntity.ok(response);
     }
