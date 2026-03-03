@@ -10,14 +10,16 @@
              , T1.WEEK
              , T1.CHAPTER
              , T1.VIDEO_URL
-             , T1.REQ_TIME
+             , T1.REQ_TIME / 60 AS REQ_TIME
              , T1.START_DT
              , T1.END_DT
           FROM LECTURES T1
           INNER JOIN COURSES T2
               ON T1.COURSE_ID = T2.ID
          WHERE T1.COURSE_ID = #{courseId}
+         <if test="week != null and week != 0">
            AND T1.WEEK = #{week}
-        ORDER BY T1.CHAPTER ASC
+         </if>
+        ORDER BY T1.WEEK ASC, T1.CHAPTER ASC
     </select>
 </mapper>

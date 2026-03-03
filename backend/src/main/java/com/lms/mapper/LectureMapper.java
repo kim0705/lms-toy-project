@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface LectureMapper {
-    public List<Lecture> selectLectureInfoByWeek(int courseId, int week);
+    public List<Lecture> selectLectureInfoByWeek(int courseId, Integer week);
 }

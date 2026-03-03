@@ -34,6 +34,7 @@ public class RespLectureDto extends CommonInfo {
                         .week(lecture.getWeek())
                         .chapter(lecture.getChapter())
                         .videoUrl(lecture.getVideoUrl())
+                        .reqTime(lecture.getReqTime())
                         .startDt(lecture.getStartDt())
                         .endDt(lecture.getEndDt())
                         .build())

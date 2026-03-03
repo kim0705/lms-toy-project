@@ -14,7 +14,7 @@ public class LectureService {
     @Autowired
     private LectureMapper lectureMapper;
 
-    public List<RespLectureDto> findLectureInfoByWeek(int courseId, int week) {
+    public List<RespLectureDto> findLectureInfoByWeek(int courseId, Integer week) {
 
         List<Lecture> lectureList = lectureMapper.selectLectureInfoByWeek(courseId, week);
 
