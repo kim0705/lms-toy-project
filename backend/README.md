@@ -15,7 +15,7 @@
 ### 🌿 Branch 전략
 - `main`: 제품 출시 브랜치
 - `develop`: 개발 통합 브랜치
-- `feature/#이슈번호`: 개별 기능 개발 브랜치
+- `feature/branch설명-이슈번호`: 개별 기능 개발 브랜치
 
 ### 🚀 Workflow
 1. Issue를 생성한다.

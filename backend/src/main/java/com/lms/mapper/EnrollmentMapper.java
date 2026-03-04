@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface EnrollmentMapper {
-    public List<Course> selectEnrollmentById(int studentId);
+    List<Course> selectEnrollmentById(int studentId);
 }

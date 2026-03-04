@@ -4,6 +4,7 @@ export const Container = styled.div`
     padding: 32px;
     background-color: ${props => props.theme.colors.background};
     min-height: calc(100vh - ${props => props.theme.size.headerHeight});
+    font-family: ${props => props.theme.fonts.family};
 `;
 
 export const Header = styled.header`
@@ -11,22 +12,23 @@ export const Header = styled.header`
 `;
 
 export const Title = styled.h2`
-    font-size: 24px;
+    font-size: ${props => props.theme.fonts.size.xxl};
+    font-weight: ${props => props.theme.fonts.weight.bold};
     color: ${props => props.theme.colors.textMain};
     margin-bottom: 4px;
 `;
 
 export const Subtitle = styled.p`
     color: ${props => props.theme.colors.textSub};
-    font-size: 14px;
+    font-size: ${props => props.theme.fonts.size.sm}; 
+    font-weight: ${props => props.theme.fonts.weight.regular}; 
 `;
 
-/* 탭 스타일 */
 export const TabList = styled.div`
     display: flex;
     gap: 8px;
     margin-bottom: 32px;
-    background: #e2e8f0;
+    background: ${props => props.theme.colors.border};
     padding: 4px;
     border-radius: 12px;
     width: fit-content;
@@ -39,7 +41,8 @@ export const TabItem = styled.button`
     padding: 8px 16px;
     border-radius: 8px;
     border: none;
-    font-weight: 600;
+    font-size: ${props => props.theme.fonts.size.sm};
+    font-weight: ${props => props.theme.fonts.weight.semibold};
     cursor: pointer;
     transition: all 0.2s;
     background: ${props => props.active ? props.theme.colors.white : 'transparent'};
@@ -59,7 +62,6 @@ export const CountBadge = styled.span`
     border-radius: 10px;
 `;
 
-/* 리스트 스타일 */
 export const ListContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -67,7 +69,8 @@ export const ListContainer = styled.div`
 `;
 
 export const ListHeader = styled.h3`
-    font-size: 16px;
+    font-size: ${props => props.theme.fonts.size.base};
+    font-weight: ${props => props.theme.fonts.weight.semibold};
     color: ${props => props.theme.colors.textMain};
     margin-bottom: 4px;
 `;
@@ -101,17 +104,17 @@ export const ItemText = styled.div`
     flex-direction: column;
     
     .item-title {
-        font-weight: 600;
+        font-size: ${props => props.theme.fonts.size.base};
+        font-weight: ${props => props.theme.fonts.weight.semibold};
         color: ${props => props.theme.colors.textMain};
     }
-    .item-info {
-        font-size: 12px;
-        color: ${props => props.theme.colors.textSub};
-    }
-    .urgent {
-        color: #ef4444;
-        font-weight: 600;
-    }
+`;
+
+export const ItemInfo = styled.span`
+    font-size: ${props => props.theme.fonts.size.xs};
+    color: ${props => props.$isPeriod ? props.theme.colors.danger : props.theme.colors.textSub};
+    font-weight: ${props => props.$isPeriod ? props.theme.fonts.weight.semibold : props.theme.fonts.weight.regular};
+    transition: color 0.2s ease;
 `;
 
 export const ActionBtn = styled.button`
@@ -120,11 +123,11 @@ export const ActionBtn = styled.button`
     border: 1px solid ${props => props.primary ? 'transparent' : props.theme.colors.border};
     background: ${props => props.primary ? props.theme.colors.primary : props.theme.colors.white};
     color: ${props => props.primary ? props.theme.colors.white : props.theme.colors.textMain};
-    font-size: 13px;
-    font-weight: 600;
+    font-size: ${props => props.theme.fonts.size.sm};
+    font-weight: ${props => props.theme.fonts.weight.semibold};
     cursor: pointer;
 
     &:hover {
-        background: ${props => props.primary ? props.theme.colors.primaryHover : '#f8fafc'};
+        background: ${props => props.primary ? props.theme.colors.primaryHover : props.theme.colors.background};
     }
 `;
