@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lms.mapper.AssignmentMapper">
+
+    <!-- 학습 주차별 과제 정보 조회 -->
+    <select id="selectAssignmentInfoByWeek" resultType="com.lms.dto.response.RespAssignmentDto">
+        SELECT DISTINCT
+               T1.ID AS COURSE_ID
+             , T2.WEEK
+             , T3.ID AS ASSIGNMENT_ID
+             , T3.TITLE
+             , T3.START_DT
+             , T3.END_DT
+             , CASE WHEN NOW() BETWEEN T3.START_DT AND T3.END_DT THEN 'Y'
+                    ELSE 'N'
+               END AS IS_PERIOD
+             , T4.STUDENT_ID
+             , CASE WHEN T4.ID IS NOT NULL THEN 'Y'
+                    ELSE 'N'
+               END AS SUB_STATUS
+          FROM COURSES T1
+          INNER JOIN LECTURES T2
+              ON T1.ID = T2.COURSE_ID
+          INNER JOIN ASSIGNMENTS T3
+              ON T1.ID = T3.COURSE_ID
+            <![CDATA[
+              AND T2.START_DT <= T3.START_DT
+              AND T2.END_DT >= T3.END_DT
+            ]]>
+          LEFT OUTER JOIN ASSIGNMENT_SUBMISSIONS T4
+              ON T3.ID = T4.ASSIGNMENT_ID
+              AND T4.STUDENT_ID = #{studentId}
+         WHERE T1.ID = #{courseId}
+         <if test="week != null and week != 0">
+           AND T2.WEEK = #{week}
+         </if>
+        ORDER BY T2.WEEK ASC, T3.ID ASC
+    </select>
+</mapper>
