@@ -7,6 +7,25 @@ export const theme = {
         textMain: '#1e293b',   // 진한 네이비 그레이
         textSub: '#64748b',    // 흐린 회색
         border: '#e2e8f0',
+        danger: '#ef4444',
+    },
+    fonts: {
+        family: "'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif",
+        size: {
+            xs: '12px',
+            sm: '14px',
+            base: '16px',
+            lg: '18px',
+            xl: '20px',
+            xxl: '24px',
+        },
+        weight: {
+            light: 300,
+            regular: 400,
+            medium: 500,
+            semibold: 600,
+            bold: 700,
+        }
     },
     size: {
         sidebarWidth: '260px',
