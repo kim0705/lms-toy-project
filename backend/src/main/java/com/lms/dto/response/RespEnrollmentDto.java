@@ -9,10 +9,9 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RespEnrollmentDto extends CommonInfoDto {
+public class RespEnrollmentDto {
     private int courseId;
     private String courseTitle;
 

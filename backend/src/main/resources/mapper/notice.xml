@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lms.mapper.NoticeMapper">
+
+    <select id="selectNoitceInfoByWeek" resultType="com.lms.dto.response.RespNoticeDto">
+        SELECT DISTINCT
+               T1.ID AS COURSE_ID
+             , T2.WEEK
+             , T3.ID AS NOTICE_ID
+             , T3.TITLE
+             , CASE WHEN EXISTS (
+                                SELECT 1
+                                  FROM NOTICE_LOG T4
+                                 WHERE T4.NOTICE_ID = T3.ID
+                                   AND T4.STUDENT_ID = #{studentId}
+                                )
+                    THEN 'Y'
+                    ELSE 'N'
+               END AS READ_STATUS
+          FROM COURSES T1
+          INNER JOIN LECTURES T2
+              ON T1.ID = T2.COURSE_ID
+          INNER JOIN NOTICES T3
+              ON T1.ID = T2.COURSE_ID
+         WHERE T1.ID = #{courseId}
+           AND T2.WEEK = #{week}
+           AND T3.INS_DT BETWEEN T2.START_DT AND T2.END_DT
+       ORDER BY READ_STATUS ASC, T3.ID ASC
+    </select>
+</mapper>

@@ -3,7 +3,7 @@ import { instance } from "./util/instance";
 export const getAssignmentInfo = async(courseId, week) => {
     const response = await instance.get(`/assignment/${courseId}`, {
         params: {
-            week: week || null
+            week: week || 1
         }
     });
     return response.data;

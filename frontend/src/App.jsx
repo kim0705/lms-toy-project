@@ -3,8 +3,8 @@ import { Global, ThemeProvider } from "@emotion/react";
 import { globalStyles } from "./styles/global";
 import MainLayout from "./layout/MainLayout/MainLayout";
 import { theme } from "./styles/theme";
-import CoursesPage from "./pages/CoursesPage/CoursesPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import LecturePage from "./pages/LecturePage/LecturePage";
 
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
                         <Route path="/" element={<Dashboard />} />
 
                         <Route path="/course/:courseId">
-                            <Route path="study" element={<CoursesPage />} />
+                            <Route path="study" element={<LecturePage />} />
                             <Route path="report" element={<div>리포트 페이지</div>} />
                             <Route path="notice" element={<div>공지사항 페이지</div>} />
                         </Route>
