@@ -54,14 +54,6 @@ export const TabItem = styled.button`
     }
 `;
 
-export const CountBadge = styled.span`
-    background: #ef4444;
-    color: white;
-    font-size: 11px;
-    padding: 1px 6px;
-    border-radius: 10px;
-`;
-
 export const ListContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -99,6 +91,21 @@ export const IconBox = styled.div`
     align-items: center;
 `;
 
+export const ItemTitle = styled.span`
+    display: block;
+    margin-bottom: 4px;
+    font-size: 16px;
+
+    /* 1. 강의거나, 읽지 않은 공지/과제는 테마의 bold/semibold 적용 */
+    font-weight: ${props => (props.isLecture || props.isUnread) 
+        ? props.theme.fonts.weight.bold 
+        : props.theme.fonts.weight.regular};
+    
+    color: ${props => (props.isLecture || props.isUnread) 
+        ? props.theme.colors.textPrimary 
+        : props.theme.colors.textSub};
+`;
+
 export const ItemText = styled.div`
     display: flex;
     flex-direction: column;
@@ -112,8 +119,18 @@ export const ItemText = styled.div`
 
 export const ItemInfo = styled.span`
     font-size: ${props => props.theme.fonts.size.xs};
-    color: ${props => props.$isPeriod ? props.theme.colors.danger : props.theme.colors.textSub};
-    font-weight: ${props => props.$isPeriod ? props.theme.fonts.weight.semibold : props.theme.fonts.weight.regular};
+    color: ${props => {
+        /* 1. 제출 안 했거나(N) 안 읽었으면(N) 강조를 위해 빨간색(danger) 반환 */
+        if (!props.$isDone) {
+            return props.theme.colors.danger;
+        }
+        /* 2. 이미 제출했거나 읽은 상태라면 차분한 회색(textSub) 반환 */
+        return props.theme.colors.textSub;
+    }};
+    font-weight: ${props => 
+        /* 3. 안 한 일(미제출/안 읽음)만 굵게 표시 */
+        !props.$isDone ? props.theme.fonts.weight.semibold : props.theme.fonts.weight.regular
+    };
     transition: color 0.2s ease;
 `;
 
@@ -127,7 +144,29 @@ export const ActionBtn = styled.button`
     font-weight: ${props => props.theme.fonts.weight.semibold};
     cursor: pointer;
 
-    &:hover {
-        background: ${props => props.primary ? props.theme.colors.primaryHover : props.theme.colors.background};
-    }
+    ${props => {
+        switch (props.variant) {
+            case 'primary': /* 제출 안 함 */
+                return `
+                    background: ${props.theme.colors.primary};
+                    color: white;
+                    border: none;
+                    &:hover { background: ${props.theme.colors.primaryHover}; }
+                `;
+            case 'success': /* 이미 완료함 */
+                return `
+                    background: #f0fdf4;
+                    color: #16a34a;
+                    border: 1px solid #bbf7d0;
+                    &:hover { background: #dcfce7; }
+                `;
+            default: /* 일반 (다시보기 등) */
+                return `
+                    background: white;
+                    color: ${props.theme.colors.textMain};
+                    border: 1px solid ${props.theme.colors.border};
+                    &:hover { background: ${props.theme.colors.background}; }
+                `;
+        }
+    }}
 `;

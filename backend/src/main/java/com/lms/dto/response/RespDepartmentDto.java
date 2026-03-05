@@ -6,10 +6,9 @@ import lombok.*;
 
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RespDepartmentDto extends CommonInfoDto {
+public class RespDepartmentDto {
     private int id;
     private String deptName;
 

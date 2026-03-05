@@ -20,11 +20,9 @@ public class AssignmentController {
      * GET http://localhost:8080/api/assignment/{courseId}?week={week}
      */
     @GetMapping("/{courseId}")
-    public ResponseEntity<List<RespAssignmentDto>> getAssignmentInfoByWeek(@PathVariable int courseId, @RequestParam(required = false) Integer week) {
+    public ResponseEntity<List<RespAssignmentDto>> getAssignmentInfoByWeek(@PathVariable int courseId, @RequestParam(required = true) int week) {
 
-        String studentId = "user01"; // 임시 하드코딩
-        System.out.println("courseId 확인: " + courseId );
-        System.out.println("week 확인: " + week );
+        int studentId = 1; // 임시 하드코딩
 
         return ResponseEntity.ok(assignmentService.findAssignmentInfoByWeek(courseId, studentId, week));
 

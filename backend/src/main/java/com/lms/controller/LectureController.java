@@ -13,7 +13,7 @@ public class LectureController {
     private LectureService lectureService;
 
     /**
-     * [주차별 강의 정보 조회]
+     * [주차별 강의 정보 조회(전체/주차별)]
      * GET http://localhost:8080/api/lecture/{courseId}?week={week}
      */
     @GetMapping("/{courseId}")
