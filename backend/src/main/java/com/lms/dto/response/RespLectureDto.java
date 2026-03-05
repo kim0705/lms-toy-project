@@ -10,10 +10,9 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RespLectureDto extends CommonInfo {
+public class RespLectureDto {
     private int id;
     private int courseId;
     private String title;
