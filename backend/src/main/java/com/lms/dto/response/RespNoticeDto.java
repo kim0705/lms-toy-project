@@ -1,20 +1,17 @@
-package com.lms.entity;
+package com.lms.dto.response;
 
+import com.lms.dto.CommonInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * [과목 엔티티]
- * 실제 DB 테이블 'courses'와 연결
- */
-
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course extends CommonInfo{
-    private int id;
+public class RespNoticeDto {
+    private int noticeId;
+    private int courseId;
     private String title;
+    private String readStatus;
 }

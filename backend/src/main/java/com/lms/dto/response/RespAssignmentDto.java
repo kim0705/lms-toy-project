@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RespAssignmentDto extends CommonInfoDto {
+public class RespAssignmentDto {
     private int courseId;
     private int assignmentId;
     private int week;
@@ -20,6 +19,5 @@ public class RespAssignmentDto extends CommonInfoDto {
     private LocalDateTime startDt;
     private LocalDateTime endDt;
     private String isPeriod;
-    private String studentId;
     private String subStatus;
 }

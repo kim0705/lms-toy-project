@@ -13,7 +13,7 @@ public class AssignmentService {
     @Autowired
     private AssignmentMapper assignmentMapper;
 
-    public List<RespAssignmentDto> findAssignmentInfoByWeek(int courseId, String studentId, Integer week) {
+    public List<RespAssignmentDto> findAssignmentInfoByWeek(int courseId, int studentId, int week) {
 
         return assignmentMapper.selectAssignmentInfoByWeek(courseId, studentId, week);
 
