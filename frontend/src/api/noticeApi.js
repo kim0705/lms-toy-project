@@ -6,5 +6,5 @@ export const getNoticeInfo = async(courseId, week) => {
             week: week || 1
         }
     }) 
-    return response.data;
+    return response;
 }
