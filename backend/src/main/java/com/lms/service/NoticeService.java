@@ -2,16 +2,16 @@ package com.lms.service;
 
 import com.lms.dto.response.RespNoticeDto;
 import com.lms.mapper.NoticeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NoticeService {
 
-    @Autowired
-    private NoticeMapper noticeMapper;
+    private final NoticeMapper noticeMapper;
 
     public List<RespNoticeDto> findNoticeInfoByWeek(int courseId, int studentId, int week) {
 

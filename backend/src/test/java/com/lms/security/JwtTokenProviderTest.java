@@ -17,7 +17,8 @@ public class JwtTokenProviderTest {
     void jwtTest() {
         /* 1. 토큰 생성 */
         String userId = "testUser";
-        String token = jwtTokenProvider.createToken(userId);
+        String role = "ROLE_STUDENT";
+        String token = jwtTokenProvider.createToken(userId, role);
         System.out.println("발급된 토큰: " + token);
 
         /* 2. 유효성 검사 */

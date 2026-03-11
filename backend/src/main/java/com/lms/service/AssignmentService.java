@@ -2,16 +2,16 @@ package com.lms.service;
 
 import com.lms.dto.response.RespAssignmentDto;
 import com.lms.mapper.AssignmentMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AssignmentService {
 
-    @Autowired
-    private AssignmentMapper assignmentMapper;
+    private final AssignmentMapper assignmentMapper;
 
     public List<RespAssignmentDto> findAssignmentInfoByWeek(int courseId, int studentId, int week) {
 
