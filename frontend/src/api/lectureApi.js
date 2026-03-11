@@ -6,5 +6,5 @@ export const getLectureInfo = async(courseId, week) => {
             week: week || null
         }
     });
-    return response.data;
+    return response;
 }

@@ -3,16 +3,16 @@ package com.lms.service;
 import com.lms.dto.response.RespLectureDto;
 import com.lms.entity.Lecture;
 import com.lms.mapper.LectureMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class LectureService {
 
-    @Autowired
-    private LectureMapper lectureMapper;
+    private final LectureMapper lectureMapper;
 
     public List<RespLectureDto> findLectureInfoByWeek(int courseId, Integer week) {
 
