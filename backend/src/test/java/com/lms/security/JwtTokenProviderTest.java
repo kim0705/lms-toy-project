@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
+/* *
+ * JWT 토큰 생성 및 검증 통합 테스트 클래스입니다.
+ */
 @SpringBootTest
 public class JwtTokenProviderTest {
 

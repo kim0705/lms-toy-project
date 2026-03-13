@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * [유저 엔티티]
+ * 실제 DB 테이블 'students'와 연결
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
