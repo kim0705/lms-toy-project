@@ -2,7 +2,7 @@ package com.lms.controller;
 
 import com.lms.dto.request.ReqLoginDto;
 import com.lms.dto.response.RespCommonInfo;
-import com.lms.service.LoginService;
+import com.lms.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -24,20 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 })
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/login")
-public class LoginController {
+@RequestMapping("/api/auth")
+public class AuthController {
 
-    private final LoginService loginService;
+    private final AuthService authService;
 
     /**
      * [로그인]
-     * GET http://localhost:8080/api/login
+     * Post http://localhost:8080/api/auth/login
      */
     @Operation(summary = "로그인 시도", description = "학번(userId)과 비밀번호를 받아 JWT 토큰을 반환합니다.")
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<RespCommonInfo<String>> signIn(@RequestBody ReqLoginDto reqLoginDto) {
 
-        String token = loginService.signIn(reqLoginDto);
+        String token = authService.signIn(reqLoginDto);
 
         return ResponseEntity.ok(new RespCommonInfo<>(200, "로그인에 성공했습니다.", token));
 
