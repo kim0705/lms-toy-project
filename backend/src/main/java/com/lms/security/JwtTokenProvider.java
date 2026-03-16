@@ -20,11 +20,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    /* 설정 파일에서 비밀키와 만료시간 로드 */
+    /* 비밀키 */
     @Value("${jwt.secret}")
     private String salt;
+    /* Access Token 만료 시간 */
     @Value("${jwt.expiration-time}")
     private Long expirationTime;
+    /* Refresh Token 만료 시간 */
+    @Value(("${jwt.refresh-expiration-time}"))
+    private Long refreshExpirationTime;
 
     private SecretKey secretKey;
 
