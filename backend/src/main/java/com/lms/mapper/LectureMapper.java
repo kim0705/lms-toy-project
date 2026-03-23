@@ -7,5 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface LectureMapper {
+    /* 주차별 강의 정보 조회 */
     List<Lecture> selectLectureInfoByWeek(int courseId, Integer week);
 }

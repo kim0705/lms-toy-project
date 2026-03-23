@@ -8,10 +8,12 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-@Configuration
-/* * Redis 연결 및 데이터 처리를 위한 설정 클래스입니다.
+
+/**
+ * Redis 연결 및 데이터 처리를 위한 설정 클래스입니다.
  * Lettuce 라이브러리를 사용하여 비동기로 레디스와 통신합니다.
  */
+@Configuration
 public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
@@ -27,9 +29,9 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    public RedisTemplate<String, String> redisTemplate() {
         /* RedisTemplate은 레디스 데이터를 조작하는 메인 도구입니다. */
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
 
         /* * 레디스에 저장될 때 Key와 Value가 깨지지 않도록 설정합니다.
