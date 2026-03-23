@@ -3,6 +3,7 @@
 
 <mapper namespace="com.lms.mapper.NoticeMapper">
 
+    <!-- 학습 주차별 공지사항 정보 조회 -->
     <select id="selectNoitceInfoByWeek" resultType="com.lms.dto.response.RespNoticeDto">
         SELECT DISTINCT
                T1.ID AS COURSE_ID
