@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Redis 연결이 정상적으로 이루어지는지 확인하는 테스트 클래스입니다.
  */
+
 @SpringBootTest
 class RedisConfigTest {
 
@@ -30,7 +31,6 @@ class RedisConfigTest {
 
         /* Then: 저장된 데이터를 다시 가져와서 비교 */
         String result = (String) valueOperations.get(key);
-        System.out.println("Redis에서 가져온 값: " + result);
 
         assertThat(result).isEqualTo(value);
     }
