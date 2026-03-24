@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/* *
+/**
  * Redis 연결이 정상적으로 이루어지는지 확인하는 테스트 클래스입니다.
  */
 @SpringBootTest

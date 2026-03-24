@@ -4,9 +4,33 @@
 <mapper namespace="com.lms.mapper.LoginLogMapper">
 
     <!-- 로그인 로그 저장 -->
-    <select id="insertLoginLog">
-
-
-    </select>
+    <insert id="insertLoginLog">
+        INSERT INTO LOGIN_LOG( STUDENT_ID
+                             , LOGIN_DT
+                             , DEVICE_TYPE
+                             , OS_NAME
+                             , BROWSER_NAME
+                             , USER_AGENT
+                             , INS_IP
+                             , INS_ID
+                             , INS_DT
+                             , UPD_IP
+                             , UPD_ID
+                             , UPD_DT
+                            ) VALUES (
+                              #{userId}
+                            , NOW()
+                            , #{deviceType}
+                            , #{osName}
+                            , #{browserName}
+                            , #{userAgent}
+                            , #{clientIp}
+                            , #{userId}
+                            , NOW()
+                            , #{clientIp}
+                            , #{userId}
+                            , NOW()
+                            )
+    </insert>
 
 </mapper>
