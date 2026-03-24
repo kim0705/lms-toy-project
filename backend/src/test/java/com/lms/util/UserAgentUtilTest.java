@@ -7,6 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * User-Agent 데이터 추출 확인 통합 테스트 클래스입니다.
+ */
+
 @SpringBootTest
 class UserAgentUtilTest {
 
