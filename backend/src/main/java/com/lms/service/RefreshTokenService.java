@@ -34,7 +34,7 @@ public class RefreshTokenService {
         }
 
         /* Redis Key 설정 (기기 정보를 Key에 포함) */
-        String redisKey = "RT:" + refreshTokenDto.getUserId() + ":" + refreshTokenDto.getDeviceInfo();
+        String redisKey = "RT:" + refreshTokenDto.getUserId() + ":" + refreshTokenDto.getDeviceType();
 
         /* 레디스에 저장할 때 유효기간(TTL)을 함께 설정해서 자동으로 삭제 */
         redisTemplate.opsForValue().set(
@@ -48,14 +48,14 @@ public class RefreshTokenService {
     }
 
     /* 저장된 토큰 가져오기 */
-    public String findRefreshToken(String userId, String deviceInfo) {
+    public String findRefreshToken(String userId, String deviceType) {
 
         /* 유효성 검사: 유저 ID가 없거나 비어있는 경우 예외를 발생 */
         if(userId == null || userId.isEmpty()) {
             throw new IllegalArgumentException("조회할 유저 ID가 없습니다.");
         }
 
-        String redisKey = "RT:" + userId + ":" + deviceInfo;
+        String redisKey = "RT:" + userId + ":" + deviceType;
         String token = redisTemplate.opsForValue().get(redisKey);
 
         if (token != null) {
@@ -66,14 +66,14 @@ public class RefreshTokenService {
     }
 
     /* 토큰 삭제 (로그아웃 시 사용) */
-    public void deleteRefreshToken(String userId, String deviceInfo) {
+    public void deleteRefreshToken(String userId, String deviceType) {
 
         /* 유효성 검사: 유저 ID가 없거나 비어있는 경우 예외를 발생 */
         if (userId == null || userId.isEmpty()) {
             throw new IllegalArgumentException("삭제할 유저 ID가 없습니다.");
         }
 
-        String redisKey = "RT:" + userId + ":" + deviceInfo;
+        String redisKey = "RT:" + userId + ":" + deviceType;
         redisTemplate.delete(redisKey);
 
         log.info("[Redis Success] 리프레시 토큰 삭제 완료 - Key: {}", redisKey);

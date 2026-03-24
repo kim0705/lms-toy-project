@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 로그인 로그 저장 DTO
- * @description 로그인 인증 완료 후 로그인 로그 테이블에 저장할 데이터를 담는 객체입니다.
+ * Redis 저장용 리프레시 토큰 DTO
+ * @description 사용자별, 기기별(WEB/MOBILE) 리프레시 토큰 정보를 Redis에 저장하기 위한 객체입니다.
  */
 
 @Data
@@ -18,14 +18,14 @@ import lombok.NoArgsConstructor;
 public class RefreshTokenDto {
     private String userId;
     private String refreshToken;
-    private String deviceInfo;
+    private String deviceType;
     private Long refreshExpirationTime;
 
-    public static RefreshTokenDto of(String userId, String refreshToken, String deviceInfo, Long refreshExpirationTime) {
+    public static RefreshTokenDto of(String userId, String refreshToken, String deviceType, Long refreshExpirationTime) {
         return RefreshTokenDto.builder()
                 .userId(userId)
                 .refreshToken(refreshToken)
-                .deviceInfo(deviceInfo)
+                .deviceType(deviceType)
                 .refreshExpirationTime(refreshExpirationTime)
                 .build();
     }

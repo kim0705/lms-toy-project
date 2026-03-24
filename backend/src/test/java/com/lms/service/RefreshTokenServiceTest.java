@@ -1,11 +1,16 @@
 package com.lms.service;
 
 import com.lms.dto.auth.RefreshTokenDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * 리프레시 토큰 생성/조회/삭제 통합 테스트 클래스입니다.
+ */
 
 @SpringBootTest
 class RefreshTokenServiceTest {
@@ -14,6 +19,7 @@ class RefreshTokenServiceTest {
     private RefreshTokenService refreshTokenService;
 
     @Test
+    @DisplayName("리프레시 토큰 생성 테스트")
     void saveRefreshToken() {
 
         String userId = "user1";
