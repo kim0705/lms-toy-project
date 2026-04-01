@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
+public class PrincipalUser implements UserDetails {
 
     private int id;
     private String userId;
