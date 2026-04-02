@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lms.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.lms.entity.User">
+        <id property="id" column="ID" />
+        <result property="userId" column="USER_ID"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="name" column="NAME"/>
+        <result property="role" column="ROLE"/>
+    </resultMap>
+
+    <!-- PK(숫자)로 유저 찾기 (내 정보 조회, 학과 조회 등 내부 로직용) -->
+    <select id="selectUserInfoById" resultMap="UserResultMap">
+        SELECT ID
+             , USER_ID
+             , PASSWORD
+             , NAME
+             , ROLE
+          FROM USERS
+         WHERE ID = #{id}
+    </select>
+
+    <!-- 로그인 ID(문자열)로 유저 찾기 (로그인 처리, 토큰 재발급용) -->
+    <select id="selectUserInfoByUserId" resultMap="UserResultMap">
+        SELECT ID
+             , USER_ID
+             , PASSWORD
+             , NAME
+             , ROLE
+          FROM USERS
+         WHERE USER_ID = #{userId}
+    </select>
+
+</mapper>
