@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * JWT 토큰 생성 및 검증 통합 테스트 클래스입니다.
+ */
+
 @SpringBootTest
 public class JwtTokenProviderTest {
 
@@ -18,8 +22,7 @@ public class JwtTokenProviderTest {
         /* 1. 토큰 생성 */
         String userId = "testUser";
         String role = "ROLE_STUDENT";
-        String token = jwtTokenProvider.createToken(userId, role);
-        System.out.println("발급된 토큰: " + token);
+        String token = jwtTokenProvider.createAccessToken(userId, role);
 
         /* 2. 유효성 검사 */
         boolean isValid = jwtTokenProvider.validateToken(token);
