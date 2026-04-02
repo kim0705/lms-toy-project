@@ -11,8 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * [유저 엔티티]
- * 실제 DB 테이블 'students'와 연결
+ * [인증 유저 엔티티]
+ * 인증 객체로 사용
  */
 
 @Data
@@ -20,28 +20,24 @@ import java.util.List;
 @AllArgsConstructor
 public class PrincipalUser implements UserDetails {
 
-    private int id;
-    private String userId;
-    private String password;
-    private String name;
-    private String role;
+    private User user;
 
     /* 시큐리티 권한 반환 */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role));
+        return List.of(new SimpleGrantedAuthority(user.getRole()));
     }
 
     /* 시큐리티 비밀번호 반환 */
     @Override
     public String getPassword() {
-        return this.password;
+        return user.getPassword();
     }
 
     /* 시큐리티 아이디 반환 (학번) */
     @Override
     public String getUsername() {
-        return this.userId;
+        return user.getUserId();
     }
 
     /* 계정 상태 관리 시작 */
