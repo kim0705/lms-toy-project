@@ -14,9 +14,9 @@ public class EnrollmentService {
 
     private final EnrollmentMapper enrollmentMapper;
 
-    public List<RespEnrollmentDto> findEnrollmentById(int id) {
+    public List<RespEnrollmentDto> findEnrollmentById(String userId) {
 
-        List<Course> couseList = enrollmentMapper.selectEnrollmentById(id);
+        List<Course> couseList = enrollmentMapper.selectEnrollmentById(userId);
 
         return RespEnrollmentDto.fromEntity(couseList);
     }

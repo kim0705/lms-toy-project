@@ -33,11 +33,11 @@ public class EnrollmentController {
      * GET http://localhost:8080/api/enrollments
      */
 
-    @Operation(summary = "수강 목록 조회", description = "학생 ID를 통해 수강 중인 강의 목록을 가져옵니다.")
+    @Operation(summary = "수강 목록 조회", description = "유저 ID를 통해 수강 중인 강의 목록을 가져옵니다.")
     @GetMapping()
     public ResponseEntity<RespCommonInfo<List<RespEnrollmentDto>>> getEnrollmentInfo(@AuthenticationPrincipal PrincipalUser principalUser) {
 
-        List<RespEnrollmentDto> enrollmentList = enrollmentService.findEnrollmentById(principalUser.getUser().getId());
+        List<RespEnrollmentDto> enrollmentList = enrollmentService.findEnrollmentById(principalUser.getUser().getUserId());
 
         return ResponseEntity.ok(new RespCommonInfo<>(200, "수강 목록 조회 성공", enrollmentList));
 

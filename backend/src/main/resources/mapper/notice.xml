@@ -14,7 +14,7 @@
                                 SELECT 1
                                   FROM NOTICE_LOG T4
                                  WHERE T4.NOTICE_ID = T3.ID
-                                   AND T4.STUDENT_ID = #{studentId}
+                                   AND T4.USER_ID = #{userId}
                                 )
                     THEN 'Y'
                     ELSE 'N'

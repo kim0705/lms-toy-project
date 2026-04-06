@@ -35,7 +35,7 @@ public class AssignmentController {
     @GetMapping("/{courseId}")
     public ResponseEntity<RespCommonInfo<List<RespAssignmentDto>>> getAssignmentInfoByWeek(@PathVariable int courseId, @RequestParam(required = true) int week, @AuthenticationPrincipal PrincipalUser principalUser) {
 
-        List<RespAssignmentDto> assignmentList = assignmentService.findAssignmentInfoByWeek(courseId, principalUser.getUser().getId(), week);
+        List<RespAssignmentDto> assignmentList = assignmentService.findAssignmentInfoByWeek(courseId, principalUser.getUser().getUserId(), week);
 
         return ResponseEntity.ok(new RespCommonInfo<>(200,"과제 정보 조회 성공", assignmentList));
 

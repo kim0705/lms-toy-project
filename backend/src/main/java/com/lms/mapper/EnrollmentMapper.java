@@ -7,6 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface EnrollmentMapper {
-    /* PK(숫자)를 이용한 수강 목록 정보 조회 */
-    List<Course> selectEnrollmentById(int id);
+    /* 유저 ID를 이용한 수강 목록 정보 조회 */
+    List<Course> selectEnrollmentById(String userId);
 }

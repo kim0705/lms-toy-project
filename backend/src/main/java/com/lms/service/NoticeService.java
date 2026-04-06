@@ -13,9 +13,9 @@ public class NoticeService {
 
     private final NoticeMapper noticeMapper;
 
-    public List<RespNoticeDto> findNoticeInfoByWeek(int courseId, int studentId, int week) {
+    public List<RespNoticeDto> findNoticeInfoByWeek(int courseId, String userId, int week) {
 
-        return noticeMapper.selectNoitceInfoByWeek(courseId, studentId, week);
+        return noticeMapper.selectNoitceInfoByWeek(courseId, userId, week);
 
     }
 }

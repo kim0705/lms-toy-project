@@ -1,7 +1,8 @@
 package com.lms.service;
 
 import com.lms.entity.PrincipalUser;
-import com.lms.mapper.StudentMapper;
+import com.lms.entity.User;
+import com.lms.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,17 +14,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
-    private final StudentMapper studentMapper;
+    private final UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String studentNo) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        PrincipalUser user = studentMapper.selectStudentInfoByStudentNo(studentNo);
+        User user = userMapper.selectUserInfoByUserId(userId);
 
         if(user == null) {
-            throw new UsernameNotFoundException("아이디를 찾을 수 없습니다: " + studentNo);
+            throw new UsernameNotFoundException("아이디를 찾을 수 없습니다: " + userId);
         }
 
-        return user;
+        return new PrincipalUser(user);
     }
 }
