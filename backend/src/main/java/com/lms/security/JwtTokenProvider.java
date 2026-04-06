@@ -20,11 +20,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    /* 설정 파일에서 비밀키와 만료시간 로드 */
+    /* 비밀키 */
     @Value("${jwt.secret}")
     private String salt;
+    /* Access Token 만료 시간 */
     @Value("${jwt.expiration-time}")
     private Long expirationTime;
+    /* Refresh Token 만료 시간 */
+    @Value("${jwt.refresh-expiration-time}")
+    private Long refreshExpirationTime;
 
     private SecretKey secretKey;
 
@@ -38,8 +42,8 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
 
-    /* 토큰 생성: JWT 발급 */
-    public String createToken(String userId, String role) {
+    /* 엑세스 토큰 생성: JWT 발급 */
+    public String createAccessToken(String userId, String role) {
         Date now = new Date();
 
         return Jwts.builder()
@@ -47,6 +51,18 @@ public class JwtTokenProvider {
                 .claim("role", role) /* 유저 롤 넣기 */
                 .issuedAt(now) /* 언제 만들었는지 기록 */
                 .expiration(new Date(now.getTime() + expirationTime)) /* 언제까지 유효한지 기록 */
+                .signWith(secretKey) /* 위조 방지 처리 */
+                .compact(); /* 문자열로 압축 */
+    }
+
+    /* 리프레시 토큰 생성: JWT 발급 */
+    public String createRefreshToken(String userId) {
+        Date now = new Date();
+
+        return Jwts.builder()
+                .subject(userId) /* 유저 아이디 넣기 */
+                .issuedAt(now) /* 언제 만들었는지 기록 */
+                .expiration(new Date(now.getTime() + refreshExpirationTime)) /* 언제까지 유효한지 기록 */
                 .signWith(secretKey) /* 위조 방지 처리 */
                 .compact(); /* 문자열로 압축 */
     }

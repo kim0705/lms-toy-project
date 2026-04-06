@@ -20,7 +20,7 @@
                                 SELECT 1
                                   FROM ASSIGNMENT_SUBMISSIONS T4
                                  WHERE T4.ASSIGNMENT_ID = T3.ID
-                                   AND T4.STUDENT_ID = #{studentId}
+                                   AND T4.USER_ID = #{userId}
                                  )
                     THEN 'Y'
                     ELSE 'N'

@@ -5,5 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface DepartmentMapper {
-    Department selectDepartmentById(int studentId);
+    /* 학과 고유 번호(PK)로 학과 상세 정보 조회 */
+    Department selectDepartmentByDeptId(int deptId);
 }
