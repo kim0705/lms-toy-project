@@ -6,11 +6,12 @@ import com.lms.dto.request.ReqLoginDto;
 import com.lms.dto.response.RespLoginDto;
 import com.lms.entity.User;
 import com.lms.mapper.LoginLogMapper;
-import com.lms.mapper.StudentMapper;
+import com.lms.mapper.UserMapper;
 import com.lms.security.JwtTokenProvider;
 import com.lms.util.UserAgentUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -31,7 +33,7 @@ public class AuthService {
     @Value("${jwt.refresh-expiration-time}")
     private Long refreshExpirationTime;
 
-    private final StudentMapper studentMapper;
+    private final UserMapper userMapper;
     private final LoginLogMapper loginLogMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -46,16 +48,19 @@ public class AuthService {
      */
     @Transactional
     public RespLoginDto signIn(ReqLoginDto reqLoginDto, HttpServletRequest request) {
+        log.info("[Login Request] UserID: {}", reqLoginDto.getUserId());
 
         /* DB 조회 */
-        User user = studentMapper.selectStudentInfoByStudentNo(reqLoginDto.getUserId());
+        User user = userMapper.selectUserInfoByUserId(reqLoginDto.getUserId());
 
         if(user == null) {
+            log.warn("[Login Fail] 존재하지 않는 아이디: {}", reqLoginDto.getUserId());
             throw new RuntimeException("등록되지 않은 아이디입니다.");
         }
 
         /* 비밀번호 확인 */
         if(!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
+            log.warn("[Login Fail] 비밀번호 불일치: {}", reqLoginDto.getUserId());
             throw new RuntimeException("비밀번호를 확인해주세요.");
         }
 
@@ -72,6 +77,8 @@ public class AuthService {
         /* 토큰 생성 */
         String accessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
+
+        log.info("[Login Success] User: {}, Device: {}, IP: {}", user.getUserId(), deviceType, getClientIp(request));
 
         /* 로그인 이력 생성 */
         loginLogMapper.insertLoginLog(LoginLogDto.of(user.getUserId(), deviceType, osName, browserName, userAgent, clientIp));
@@ -118,5 +125,53 @@ public class AuthService {
         }
 
         return ip;
+    }
+
+    /**
+     * 토큰 재발급 처리
+     * @description Refresh Token의 유효성을 검증하고 Redis에 저장된 토큰과 비교하여 새로운 Access Token을 발급합니다.
+     * @param refreshToken 클라이언트로부터 전달받은 Refresh Token
+     * @param request 접속 기기 정보 추출을 위한 HttpServletRequest
+     * @return 새로운 Access Token 및 기존(혹은 갱신된) Refresh Token
+     */
+    @Transactional
+    public RespLoginDto refresh(String refreshToken,HttpServletRequest request) {
+        log.info("[Reissue Request] 리프레시 토큰 재발급 시도");
+
+        /* 1. JWT 자체 유효성 및 만료 여부 확인 */
+        if(!jwtTokenProvider.validateToken(refreshToken)) {
+            log.warn("[Reissue Fail] 유효하지 않은 리프레시 토큰");
+            throw new RuntimeException("유효하지 않거나 만료된 리프레시 토큰입니다. 다시 로그인해주세요.");
+        }
+
+        /* 2. 토큰에서 유저 식별자(학번 등) 추출 */
+        String userId = jwtTokenProvider.getUserId(refreshToken);
+
+        /* 3. 기기 정보 추출 (signIn 때와 동일하게 기기별 토큰 관리를 위함) */
+        String userAgent = request.getHeader("User-Agent");
+        String deviceType = UserAgentUtil.extractUserAgentInfo(userAgent).get("deviceType");
+
+        /* 4. Redis(또는 DB)에 저장된 해당 유저+기기의 Refresh Token 조회 */
+        String savedToken = refreshTokenService.findRefreshToken(userId, deviceType);
+
+        /* 5. 클라이언트가 보낸 토큰과 저장된 토큰이 일치하는지 비교 */
+        if (savedToken == null || !savedToken.equals(refreshToken)) {
+            log.warn("[Reissue Fail] 토큰 불일치 혹은 만료된 토큰 - User: {}, Device: {}", userId, deviceType);
+            throw new RuntimeException("토큰 정보가 일치하지 않습니다. 보안 위험이 있으니 다시 로그인해주세요.");
+        }
+
+        /* 6. 새로운 Access Token 발급 */
+        User user = userMapper.selectUserInfoByUserId(userId);
+        if(user == null) {
+            log.error("[Reissue Fail] 유효한 토큰이나 DB에 유저 없음 - UserID: {}", userId);
+            throw new RuntimeException("사용자 정보를 찾을 수 없습니다.");
+        }
+
+        String newAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
+
+        log.info("[Reissue Success] Access Token 재발급 완료 - User: {}", userId);
+
+        /* 7. 응답 반환 */
+        return new RespLoginDto(newAccessToken, refreshToken);
     }
 }
