@@ -7,5 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface NoticeMapper {
-    List<RespNoticeDto> selectNoitceInfoByWeek(int courseId, int studentId, int week);
+    /* 학습 주차별 공지사항 정보 조회 */
+    List<RespNoticeDto> selectNoitceInfoByWeek(int courseId, String userId, int week);
 }

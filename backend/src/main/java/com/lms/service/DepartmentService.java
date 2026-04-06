@@ -12,9 +12,9 @@ public class DepartmentService {
 
     private final DepartmentMapper departmentMapper;
 
-    public RespDepartmentDto findDepartmentById(int studentId) {
+    public RespDepartmentDto findDepartmentById(int deptId) {
 
-        Department department = departmentMapper.selectDepartmentById(studentId);
+        Department department = departmentMapper.selectDepartmentByDeptId(deptId);
 
         return RespDepartmentDto.fromEntity(department);
     }

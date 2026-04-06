@@ -7,5 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface AssignmentMapper {
-    List<RespAssignmentDto> selectAssignmentInfoByWeek(int courseId, int studentId, int week);
+    /* 학습 주차별 과제 정보 조회 */
+    List<RespAssignmentDto> selectAssignmentInfoByWeek(int courseId, String userId, int week);
 }

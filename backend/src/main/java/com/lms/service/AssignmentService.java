@@ -13,9 +13,9 @@ public class AssignmentService {
 
     private final AssignmentMapper assignmentMapper;
 
-    public List<RespAssignmentDto> findAssignmentInfoByWeek(int courseId, int studentId, int week) {
+    public List<RespAssignmentDto> findAssignmentInfoByWeek(int courseId, String userId, int week) {
 
-        return assignmentMapper.selectAssignmentInfoByWeek(courseId, studentId, week);
+        return assignmentMapper.selectAssignmentInfoByWeek(courseId, userId, week);
 
     }
 }

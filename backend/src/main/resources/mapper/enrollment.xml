@@ -3,14 +3,14 @@
 
 <mapper namespace="com.lms.mapper.EnrollmentMapper">
 
-    <!-- 학생ID를 이용한 수강 목록 정보 조회 -->
+    <!-- 유저 ID를 이용한 수강 목록 정보 조회 -->
     <select id="selectEnrollmentById" resultType="com.lms.entity.Course">
         SELECT T2.ID
              , T2.TITLE
           FROM ENROLLMENTS T1
           LEFT OUTER JOIN COURSES T2
               ON T1.COURSE_ID = T2.ID
-         WHERE T1.STUDENT_ID = #{studentId}
+         WHERE T1.USER_ID = #{userId}
         ORDER BY TITLE ASC
     </select>
 </mapper>

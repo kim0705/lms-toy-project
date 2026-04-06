@@ -3,6 +3,7 @@
 
 <mapper namespace="com.lms.mapper.NoticeMapper">
 
+    <!-- 학습 주차별 공지사항 정보 조회 -->
     <select id="selectNoitceInfoByWeek" resultType="com.lms.dto.response.RespNoticeDto">
         SELECT DISTINCT
                T1.ID AS COURSE_ID
@@ -13,7 +14,7 @@
                                 SELECT 1
                                   FROM NOTICE_LOG T4
                                  WHERE T4.NOTICE_ID = T3.ID
-                                   AND T4.STUDENT_ID = #{studentId}
+                                   AND T4.USER_ID = #{userId}
                                 )
                     THEN 'Y'
                     ELSE 'N'
