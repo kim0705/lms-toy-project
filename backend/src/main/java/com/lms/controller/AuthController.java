@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 
 @Tag(name = "인증 API", description = "로그인 및 토큰 발급을 담당하는 컨트롤러입니다.")
 @ApiResponses(value = {
@@ -40,9 +39,9 @@ public class AuthController {
 
     /**
      * [로그인 처리]
-     * @description 사용자 학번(userId)과 비밀번호를 검증하여 Access/Refresh 토큰을 발급합니다.
+     * 사용자 학번(userId)과 비밀번호를 검증하여 Access/Refresh 토큰을 발급합니다.
      * 접속 기기(User-Agent)를 분석하여 중복 로그인을 관리하고 이력을 기록합니다.
-     * * [Endpoint] POST /api/auth/signin
+     * [Endpoint] POST /api/auth/signin
      * @param reqLoginDto 로그인 요청 정보 (학번, 비밀번호)
      * @param request 접속 환경(IP, User-Agent) 추출을 위한 객체
      * @return 성공 시 200 코드, 메세지와 함께 AccessToken, RefreshToken 반환
@@ -59,8 +58,8 @@ public class AuthController {
 
     /**
      * [토큰 재발급]
-     * @description Access Token 만료 시, Refresh Token을 사용하여 새로운 Access Token을 발급합니다.
-     * * [Endpoint] POST /api/auth/refresh
+     * Access Token 만료 시, Refresh Token을 사용하여 새로운 Access Token을 발급합니다.
+     * [Endpoint] POST /api/auth/refresh
      * @param refreshTokenDto Refresh Token 정보
      * @param request 접속 환경(IP, User-Agent) 추출을 위한 객체
      * @return 성공 시 200 코드, 메세지와 함께 갱신된 AccessToken 및 기존/갱신된 RefreshToken

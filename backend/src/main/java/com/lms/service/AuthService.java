@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * 사용자 인증 및 권한 관리 서비스
- * @description 로그인 처리, 토큰 발급, 접속 이력 저장 등 인증과 관련된 핵심 비즈니스 로직을 수행합니다.
+ * 로그인 처리, 토큰 발급, 접속 이력 저장 등 인증과 관련된 핵심 비즈니스 로직을 수행합니다.
  */
 
 @Service
@@ -41,7 +41,7 @@ public class AuthService {
 
     /**
      * 통합 로그인 처리
-     * @description 아이디/비밀번호 검증 후 Access/Refresh 토큰을 발급하고 로그인 로그를 기록합니다.
+     * 아이디/비밀번호 검증 후 Access/Refresh 토큰을 발급하고 로그인 로그를 기록합니다.
      * @param reqLoginDto 로그인 요청 정보 (userId, password)
      * @param request 접속 정보 추출을 위한 HttpServletRequest
      * @return 발급된 AccessToken 및 RefreshToken
@@ -91,7 +91,7 @@ public class AuthService {
 
     /**
      * 클라이언트 실제 IP 추출
-     * @description 프록시 서버 등을 거칠 경우를 대비하여 헤더를 순차적으로 확인합니다.
+     * 프록시 서버 등을 거칠 경우를 대비하여 헤더를 순차적으로 확인합니다.
      * - 직접 접속 시: request.getRemoteAddr() 사용
      * - 프록시(Nginx, AWS ALB 등) 거칠 시: 'X-Forwarded-For' 등의 헤더에서 실제 IP 추출
      * - 보안 및 운영 환경(L4, Proxy) 대응을 위한 방어 코드입니다.
@@ -129,7 +129,7 @@ public class AuthService {
 
     /**
      * 토큰 재발급 처리
-     * @description Refresh Token의 유효성을 검증하고 Redis에 저장된 토큰과 비교하여 새로운 Access Token을 발급합니다.
+     * Refresh Token의 유효성을 검증하고 Redis에 저장된 토큰과 비교하여 새로운 Access Token을 발급합니다.
      * @param refreshToken 클라이언트로부터 전달받은 Refresh Token
      * @param request 접속 기기 정보 추출을 위한 HttpServletRequest
      * @return 새로운 Access Token 및 기존(혹은 갱신된) Refresh Token
