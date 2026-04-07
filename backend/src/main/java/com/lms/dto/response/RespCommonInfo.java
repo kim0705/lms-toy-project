@@ -17,6 +17,6 @@ public class RespCommonInfo<T> {
     @Schema(description = "응답 메시지")
     private String message;
 
-    @Schema(description = "응답 데이터 (토큰 등)")
+    @Schema(description = "응답 데이터")
     private T data;
 }

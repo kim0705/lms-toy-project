@@ -7,6 +7,7 @@ import com.lms.service.EnrollmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "수강 API", description = "수강 목록 조회를 담당하는 컨트롤러입니다.")
 @RestController
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "수강 목록 조회 성공"),
@@ -30,9 +32,11 @@ public class EnrollmentController {
 
     /**
      * [수강 목록 정보 조회]
-     * GET http://localhost:8080/api/enrollments
+     * 로그인된 사용자의 수강 중인 강의 목록을 조회합니다.
+     * [Endpoint] GET /api/enrollments
+     * @param principalUser 인증된 사용자 정보 (학번 추출)
+     * @return 성공 시 200 코드, 메세지와 함께 수강 목록 반환
      */
-
     @Operation(summary = "수강 목록 조회", description = "유저 ID를 통해 수강 중인 강의 목록을 가져옵니다.")
     @GetMapping()
     public ResponseEntity<RespCommonInfo<List<RespEnrollmentDto>>> getEnrollmentInfo(@AuthenticationPrincipal PrincipalUser principalUser) {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * 접속 기기 및 브라우저 정보 추출 유틸리티
- * @description HttpServletRequest의 User-Agent 헤더를 분석하여 OS, 브라우저, 기기 유형(PC/MOBILE)을 판별합니다.
+ * HttpServletRequest의 User-Agent 헤더를 분석하여 OS, 브라우저, 기기 유형(PC/MOBILE)을 판별합니다.
  */
 
 public class UserAgentUtil {

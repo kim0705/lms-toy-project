@@ -16,6 +16,12 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private final UserMapper userMapper;
 
+    /**
+     * 사용자 ID로 인증 객체를 로드합니다.
+     * @param userId 조회할 사용자 ID (학번)
+     * @return 인증된 사용자 정보 (PrincipalUser)
+     * @throws UsernameNotFoundException 사용자를 찾을 수 없는 경우
+     */
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 

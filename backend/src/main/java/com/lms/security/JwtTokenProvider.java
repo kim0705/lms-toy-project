@@ -42,7 +42,12 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
 
-    /* 엑세스 토큰 생성: JWT 발급 */
+    /**
+     * Access Token을 생성합니다.
+     * @param userId 토큰에 담을 사용자 ID
+     * @param role 토큰에 담을 사용자 권한
+     * @return 생성된 Access Token
+     */
     public String createAccessToken(String userId, String role) {
         Date now = new Date();
 
@@ -55,7 +60,11 @@ public class JwtTokenProvider {
                 .compact(); /* 문자열로 압축 */
     }
 
-    /* 리프레시 토큰 생성: JWT 발급 */
+    /**
+     * Refresh Token을 생성합니다.
+     * @param userId 토큰에 담을 사용자 ID
+     * @return 생성된 Refresh Token
+     */
     public String createRefreshToken(String userId) {
         Date now = new Date();
 
@@ -67,14 +76,22 @@ public class JwtTokenProvider {
                 .compact(); /* 문자열로 압축 */
     }
 
-    /* 신분증(Authentication) 발급 */
+    /**
+     * 토큰을 기반으로 Spring Security 인증 객체를 반환합니다.
+     * @param token 검증할 JWT 토큰
+     * @return 인증 객체 (Authentication)
+     */
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(token));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    /* 토큰 유효성 및 만료일자 확인 */
+    /**
+     * 토큰의 유효성 및 만료 여부를 확인합니다.
+     * @param jwtToken 검증할 JWT 토큰
+     * @return 유효하면 true, 만료 또는 잘못된 토큰이면 false
+     */
     public boolean validateToken(String jwtToken) {
         try{
             /* parseSignedClaims는 서명 검증과 만료일자 체크를 동시에 수행 */
@@ -98,7 +115,11 @@ public class JwtTokenProvider {
         return false;
     }
 
-    /* 토큰에서 유저 ID(Subject) 추출 */
+    /**
+     * 토큰에서 사용자 ID를 추출합니다.
+     * @param token 파싱할 JWT 토큰
+     * @return 토큰에 담긴 사용자 ID
+     */
     public String getUserId(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)
@@ -108,7 +129,11 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    /* 토큰에서 Bearer 제거 */
+    /**
+     * Authorization 헤더에서 Bearer 토큰을 추출합니다.
+     * @param httpServletRequest HTTP 요청 객체
+     * @return Bearer 제거 후 순수 토큰 값, 없으면 null
+     */
     public String getBearerToken(HttpServletRequest httpServletRequest) {
         String bearerToken = httpServletRequest.getHeader("Authorization");
 

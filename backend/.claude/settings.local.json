@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash:*)",
+      "Bash(node:*)",
+      "Bash(command -v npm)",
+      "Bash(npm install:*)",
+      "Bash(gh auth:*)",
+      "Bash(command -v omc)",
+      "Bash(omc --version)"
+    ]
+  }
+}
