@@ -44,3 +44,7 @@ bin/
 
 # 데이터베이스 비밀번호 포함 파일 제외
 application-secret.yml
+
+# AI 및 로컬 도구 설정 파일 제외
+.claude/
+.omc/
