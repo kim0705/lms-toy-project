@@ -15,7 +15,10 @@ public class RefreshTokenService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    /* 리프레시 토큰 저장: Key(유저ID) - Value(토큰값) */
+    /**
+     * Refresh Token을 Redis에 저장합니다.
+     * @param refreshTokenDto 저장할 토큰 정보 (userId, refreshToken, deviceType, expirationTime)
+     */
     public void saveRefreshToken(RefreshTokenDto refreshTokenDto) {
 
         /* 유효성 검사: 유저 ID가 없거나 비어있는 경우 예외를 발생 */
@@ -47,7 +50,12 @@ public class RefreshTokenService {
         log.info("[Redis Success] 리프레시 토큰 저장 완료 - Key: {}", redisKey);
     }
 
-    /* 저장된 토큰 가져오기 */
+    /**
+     * 사용자 ID와 기기 타입을 기반으로 저장된 Refresh Token을 조회합니다.
+     * @param userId 조회할 사용자 ID
+     * @param deviceType 조회할 기기 타입 (PC, MOBILE)
+     * @return 저장된 Refresh Token, 없으면 null
+     */
     public String findRefreshToken(String userId, String deviceType) {
 
         /* 유효성 검사: 유저 ID가 없거나 비어있는 경우 예외를 발생 */
@@ -65,7 +73,11 @@ public class RefreshTokenService {
         return token;
     }
 
-    /* 토큰 삭제 (로그아웃 시 사용) */
+    /**
+     * 사용자 ID와 기기 타입을 기반으로 저장된 Refresh Token을 삭제합니다. (로그아웃 시 사용)
+     * @param userId 삭제할 사용자 ID
+     * @param deviceType 삭제할 기기 타입 (PC, MOBILE)
+     */
     public void deleteRefreshToken(String userId, String deviceType) {
 
         /* 유효성 검사: 유저 ID가 없거나 비어있는 경우 예외를 발생 */

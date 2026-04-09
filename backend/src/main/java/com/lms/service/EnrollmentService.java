@@ -14,10 +14,15 @@ public class EnrollmentService {
 
     private final EnrollmentMapper enrollmentMapper;
 
+    /**
+     * 사용자 ID를 기반으로 수강 중인 강의 목록을 조회합니다.
+     * @param userId 조회할 사용자 ID (학번)
+     * @return 수강 중인 강의 목록
+     */
     public List<RespEnrollmentDto> findEnrollmentById(String userId) {
 
-        List<Course> couseList = enrollmentMapper.selectEnrollmentById(userId);
+        List<Course> courseList = enrollmentMapper.selectEnrollmentById(userId);
 
-        return RespEnrollmentDto.fromEntity(couseList);
+        return RespEnrollmentDto.fromEntity(courseList);
     }
 }

@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"bash \\\"C:/Users/user/.claude/plugins/marketplaces/omc/scripts/setup-progress.sh\\\" complete \\\"4.11.0\\\"\",\"description\":\"Mark setup complete\"}",
+  "error": "Exit code 127\nC:/Users/user/.claude/plugins/marketplaces/omc/scripts/setup-progress.sh: line 116: jq: command not found\n[rerun: b28]",
+  "timestamp": "2026-04-07T10:36:20.656Z",
+  "retry_count": 1
+}
