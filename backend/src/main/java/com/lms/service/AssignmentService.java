@@ -3,10 +3,12 @@ package com.lms.service;
 import com.lms.dto.response.RespAssignmentDto;
 import com.lms.mapper.AssignmentMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AssignmentService {
@@ -21,8 +23,9 @@ public class AssignmentService {
      * @return 과제 정보 목록
      */
     public List<RespAssignmentDto> findAssignmentInfoByWeek(int courseId, String userId, int week) {
-
-        return assignmentMapper.selectAssignmentInfoByWeek(courseId, userId, week);
-
+        log.info("[Assignment] 과제 조회 - courseId: {}, userId: {}, week: {}", courseId, userId, week);
+        List<RespAssignmentDto> result = assignmentMapper.selectAssignmentInfoByWeek(courseId, userId, week);
+        log.info("[Assignment] 조회 결과: {}건", result.size());
+        return result;
     }
 }

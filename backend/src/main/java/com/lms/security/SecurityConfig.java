@@ -23,6 +23,8 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     /* 비밀번호 암호화 도구 등록 */
     @Bean
@@ -57,6 +59,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                /* 인증/인가 실패 시 커스텀 핸들러로 응답 */
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                )
+
                 /* JWT 필터를 시큐리티 필터 체인에 끼워 넣기 */
                 .addFilterBefore(new JwtAuthenthicationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 

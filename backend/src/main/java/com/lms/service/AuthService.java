@@ -5,6 +5,8 @@ import com.lms.dto.auth.RefreshTokenDto;
 import com.lms.dto.request.ReqLoginDto;
 import com.lms.dto.response.RespLoginDto;
 import com.lms.entity.User;
+import com.lms.exception.CustomException;
+import com.lms.exception.ErrorCode;
 import com.lms.mapper.LoginLogMapper;
 import com.lms.mapper.UserMapper;
 import com.lms.security.JwtTokenProvider;
@@ -55,13 +57,13 @@ public class AuthService {
 
         if(user == null) {
             log.warn("[Login Fail] 존재하지 않는 아이디: {}", reqLoginDto.getUserId());
-            throw new RuntimeException("등록되지 않은 아이디입니다.");
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
 
         /* 비밀번호 확인 */
         if(!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
             log.warn("[Login Fail] 비밀번호 불일치: {}", reqLoginDto.getUserId());
-            throw new RuntimeException("비밀번호를 확인해주세요.");
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
 
         /* 정보 추출 */
@@ -141,7 +143,7 @@ public class AuthService {
         /* 1. JWT 자체 유효성 및 만료 여부 확인 */
         if(!jwtTokenProvider.validateToken(refreshToken)) {
             log.warn("[Reissue Fail] 유효하지 않은 리프레시 토큰");
-            throw new RuntimeException("유효하지 않거나 만료된 리프레시 토큰입니다. 다시 로그인해주세요.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
 
         /* 2. 토큰에서 유저 식별자(학번 등) 추출 */
@@ -157,14 +159,14 @@ public class AuthService {
         /* 5. 클라이언트가 보낸 토큰과 저장된 토큰이 일치하는지 비교 */
         if (savedToken == null || !savedToken.equals(refreshToken)) {
             log.warn("[Reissue Fail] 토큰 불일치 혹은 만료된 토큰 - User: {}, Device: {}", userId, deviceType);
-            throw new RuntimeException("토큰 정보가 일치하지 않습니다. 보안 위험이 있으니 다시 로그인해주세요.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
 
         /* 6. 새로운 Access Token 발급 */
         User user = userMapper.selectUserInfoByUserId(userId);
         if(user == null) {
             log.error("[Reissue Fail] 유효한 토큰이나 DB에 유저 없음 - UserID: {}", userId);
-            throw new RuntimeException("사용자 정보를 찾을 수 없습니다.");
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
         String newAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());

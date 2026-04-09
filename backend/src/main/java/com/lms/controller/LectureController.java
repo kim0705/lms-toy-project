@@ -18,8 +18,7 @@ import java.util.List;
 @RestController
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "강의 정보 조회 성공"),
-        @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 오류)"),
-        @ApiResponse(responseCode = "404", description = "강의 정보를 찾을 수 없음")
+        @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 오류)")
 })
 @RequiredArgsConstructor
 @RequestMapping("/api/lecture")

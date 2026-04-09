@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * [로그인 처리]
@@ -51,7 +53,6 @@ public class AuthController {
     public ResponseEntity<RespCommonInfo<RespLoginDto>> signIn(@Valid @RequestBody ReqLoginDto reqLoginDto, HttpServletRequest request) {
 
         RespLoginDto tokens = authService.signIn(reqLoginDto, request);
-
         return ResponseEntity.ok(new RespCommonInfo<>(200, "성공", tokens));
 
     }
