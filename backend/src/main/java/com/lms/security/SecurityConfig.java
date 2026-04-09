@@ -54,9 +54,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers("/api/student/**").hasRole("STUDENT")
-                        /* 임시로 모든 /api/** 경로를 열어줍니다. */
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 /* 인증/인가 실패 시 커스텀 핸들러로 응답 */
