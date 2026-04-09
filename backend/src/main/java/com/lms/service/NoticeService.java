@@ -3,10 +3,12 @@ package com.lms.service;
 import com.lms.dto.response.RespNoticeDto;
 import com.lms.mapper.NoticeMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
@@ -21,8 +23,9 @@ public class NoticeService {
      * @return 공지사항 목록
      */
     public List<RespNoticeDto> findNoticeInfoByWeek(int courseId, String userId, int week) {
-
-        return noticeMapper.selectNoitceInfoByWeek(courseId, userId, week);
-
+        log.info("[Notice] 공지 조회 - courseId: {}, userId: {}, week: {}", courseId, userId, week);
+        List<RespNoticeDto> result = noticeMapper.selectNoitceInfoByWeek(courseId, userId, week);
+        log.info("[Notice] 조회 결과: {}건", result.size());
+        return result;
     }
 }
