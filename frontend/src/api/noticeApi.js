@@ -1,7 +1,7 @@
 import { instance } from "./util/instance"
 
 export const getNoticeInfo = async(courseId, week) => {
-    const response = await instance.get(`/notice/${courseId}`, {
+    const response = await instance.get(`/notices/${courseId}`, {
         params: {
             week: week || 1
         }

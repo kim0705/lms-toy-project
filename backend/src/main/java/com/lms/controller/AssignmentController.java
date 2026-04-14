@@ -22,7 +22,7 @@ import java.util.List;
         @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 오류)")
 })
 @RequiredArgsConstructor
-@RequestMapping("/api/assignment")
+@RequestMapping("/api/assignments")
 public class AssignmentController {
 
     private final AssignmentService assignmentService;
