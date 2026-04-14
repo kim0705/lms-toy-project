@@ -22,7 +22,7 @@ import java.util.List;
         @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 오류)")
 })
 @RequiredArgsConstructor
-@RequestMapping("/api/notice")
+@RequestMapping("/api/notices")
 public class NoticeController {
 
     private final NoticeService noticeService;

@@ -1,6 +1,6 @@
 import { instance } from "./util/instance";
 
-export const getEnrollmentList = async(studentId) => {
-    const response = await instance.get(`/enrollments/${studentId}`);
+export const getEnrollmentList = async() => {
+    const response = await instance.get(`/enrollments`);
     return response;
 }
