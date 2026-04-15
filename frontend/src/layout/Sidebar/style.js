@@ -136,3 +136,26 @@ export const Divider = styled.div`
     background-color: rgba(255, 255, 255, 0.1);
     margin: 15px 20px;
 `;
+
+export const LogoutButton = styled.button`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+        margin-right: 12px;
+        font-size: 18px;
+    }
+
+    &:hover {
+        color: ${(props) => props.theme.colors.white};
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+`;
