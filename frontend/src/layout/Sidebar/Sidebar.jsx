@@ -1,6 +1,6 @@
 import React from 'react';
 import * as S from './style';
-import { FaBook, FaChartBar, FaBullhorn, FaThLarge, FaArrowLeft, FaUserCircle } from 'react-icons/fa';
+import { FaBook, FaChartBar, FaBullhorn, FaThLarge, FaArrowLeft, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getEnrollmentList } from '../../api/enrollmentApi';
 import { useQuery } from '@tanstack/react-query';
@@ -17,6 +17,13 @@ function Sidebar() {
         { name: '리포트', path: `/course/${courseId}/report`, icon: <FaChartBar /> },
         { name: '공지사항', path: `/course/${courseId}/notice`, icon: <FaBullhorn /> },
     ];
+
+    /* 로그아웃 처리: 토큰 제거 후 로그인 페이지로 이동 */
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        navigate('/login');
+    };
 
     const studentId = 1;
 
@@ -90,6 +97,11 @@ function Sidebar() {
                     </>
                 )}
             </S.NavSection>
+            <S.Divider />
+            <S.LogoutButton onClick={handleLogout}>
+                <FaSignOutAlt />
+                <span>로그아웃</span>
+            </S.LogoutButton>
         </S.SidebarContainer>
     );
 }
