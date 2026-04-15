@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "로그인 요청 정보")
 public class ReqLoginDto {
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
+    @Pattern(regexp = "^\\d{8}$", message = "아이디는 8자리 숫자여야 합니다.")
     @Schema(description = "사용자 아이디(학번)", example = "20260001")
     private String userId;
 
