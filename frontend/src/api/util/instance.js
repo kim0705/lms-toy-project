@@ -7,10 +7,7 @@ export const instance = axios.create({
     }
 });
 
-/**
- * [요청 인터셉터]
- * 모든 요청에 로컬 스토리지의 Access Token을 Authorization 헤더에 자동으로 추가합니다.
- */
+/* 요청 인터셉터: Access Token을 Authorization 헤더에 자동 추가 */
 instance.interceptors.request.use((config) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -19,12 +16,7 @@ instance.interceptors.request.use((config) => {
     return config;
 });
 
-/**
- * [응답 인터셉터]
- * 성공 응답 시 서버 응답 구조(status, message, data)에서 data만 추출하여 반환합니다.
- * 401 응답 시 Refresh Token으로 Access Token 재발급 후 원래 요청을 재시도합니다.
- * 재발급 실패 시 토큰을 삭제하고 로그인 페이지로 이동합니다.
- */
+/* 응답 인터셉터: 성공 시 data 추출, 401 시 토큰 재발급 시도 */
 instance.interceptors.response.use(
     (response) => {
         if (response?.data && response?.data?.status === 200) {
@@ -57,6 +49,7 @@ instance.interceptors.response.use(
             }
         }
 
-        return Promise.reject(error);
+        const serverMessage = error?.response?.data?.message;
+        return Promise.reject(new Error(serverMessage || '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'));
     }
 );

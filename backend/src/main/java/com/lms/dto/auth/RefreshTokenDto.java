@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Redis 저장용 Refresh Token DTO
- * @description 사용자별, 기기별(WEB/MOBILE) Refresh Token 정보를 Redis에 저장하기 위한 객체입니다.
+ * 사용자별, 기기별(WEB/MOBILE) Refresh Token 정보를 Redis에 저장하기 위한 객체입니다.
  */
 
 @Data

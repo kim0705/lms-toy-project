@@ -50,19 +50,17 @@ public class AuthService {
      */
     @Transactional
     public RespLoginDto signIn(ReqLoginDto reqLoginDto, HttpServletRequest request) {
-        log.info("[Login Request] UserID: {}", reqLoginDto.getUserId());
-
         /* DB 조회 */
         User user = userMapper.selectUserInfoByUserId(reqLoginDto.getUserId());
 
         if(user == null) {
-            log.warn("[Login Fail] 존재하지 않는 아이디: {}", reqLoginDto.getUserId());
+            log.warn("===== [Service] 로그인 실패 - 존재하지 않는 아이디: {} =====", reqLoginDto.getUserId());
             throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
 
         /* 비밀번호 확인 */
         if(!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
-            log.warn("[Login Fail] 비밀번호 불일치: {}", reqLoginDto.getUserId());
+            log.warn("===== [Service] 로그인 실패 - 비밀번호 불일치: {} =====", reqLoginDto.getUserId());
             throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
 
@@ -80,7 +78,7 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
 
-        log.info("[Login Success] User: {}, Device: {}, IP: {}", user.getUserId(), deviceType, getClientIp(request));
+        log.info("===== [Service] 로그인 완료 - User: {}, Device: {}, IP: {} =====", user.getUserId(), deviceType, getClientIp(request));
 
         /* 로그인 이력 생성 */
         loginLogMapper.insertLoginLog(LoginLogDto.of(user.getUserId(), deviceType, osName, browserName, userAgent, clientIp));
@@ -138,11 +136,9 @@ public class AuthService {
      */
     @Transactional
     public RespLoginDto refresh(String refreshToken,HttpServletRequest request) {
-        log.info("[Reissue Request] 리프레시 토큰 재발급 시도");
-
         /* 1. JWT 자체 유효성 및 만료 여부 확인 */
         if(!jwtTokenProvider.validateToken(refreshToken)) {
-            log.warn("[Reissue Fail] 유효하지 않은 리프레시 토큰");
+            log.warn("===== [Service] 토큰 재발급 실패 - 유효하지 않은 리프레시 토큰 =====");
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
 
@@ -158,20 +154,20 @@ public class AuthService {
 
         /* 5. 클라이언트가 보낸 토큰과 저장된 토큰이 일치하는지 비교 */
         if (savedToken == null || !savedToken.equals(refreshToken)) {
-            log.warn("[Reissue Fail] 토큰 불일치 혹은 만료된 토큰 - User: {}, Device: {}", userId, deviceType);
+            log.warn("===== [Service] 토큰 재발급 실패 - 토큰 불일치: User: {}, Device: {} =====", userId, deviceType);
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
 
         /* 6. 새로운 Access Token 발급 */
         User user = userMapper.selectUserInfoByUserId(userId);
         if(user == null) {
-            log.error("[Reissue Fail] 유효한 토큰이나 DB에 유저 없음 - UserID: {}", userId);
+            log.error("===== [Service] 토큰 재발급 실패 - DB에 유저 없음: {} =====", userId);
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
         String newAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
 
-        log.info("[Reissue Success] Access Token 재발급 완료 - User: {}", userId);
+        log.info("===== [Service] 토큰 재발급 완료 - User: {} =====", userId);
 
         /* 7. 응답 반환 */
         return new RespLoginDto(newAccessToken, refreshToken);

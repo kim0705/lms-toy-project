@@ -23,9 +23,10 @@ public class AssignmentService {
      * @return 과제 정보 목록
      */
     public List<RespAssignmentDto> findAssignmentInfoByWeek(int courseId, String userId, int week) {
-        log.info("[Assignment] 과제 조회 - courseId: {}, userId: {}, week: {}", courseId, userId, week);
         List<RespAssignmentDto> result = assignmentMapper.selectAssignmentInfoByWeek(courseId, userId, week);
-        log.info("[Assignment] 조회 결과: {}건", result.size());
+
+        log.info("===== [Service] 과제 조회 완료 - {}건 =====", result.size());
+
         return result;
     }
 }

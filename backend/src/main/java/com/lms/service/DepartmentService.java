@@ -22,16 +22,14 @@ public class DepartmentService {
      * @return 학과 정보
      */
     public RespDepartmentDto findDepartmentById(int deptId) {
-        log.info("[Department] 학과 조회 - deptId: {}", deptId);
-
         Department department = departmentMapper.selectDepartmentByDeptId(deptId);
 
         if (department == null) {
-            log.warn("[Department] 학과 없음 - deptId: {}", deptId);
+            log.warn("===== [Service] 학과 없음 - deptId: {} =====", deptId);
             throw new CustomException(ErrorCode.DEPARTMENT_NOT_FOUND);
         }
 
-        log.info("[Department] 조회 성공 - {}", department.getDeptName());
+        log.info("===== [Service] 학과 조회 완료 - {} =====", department.getDeptName());
         return RespDepartmentDto.fromEntity(department);
     }
 }

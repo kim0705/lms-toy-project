@@ -22,9 +22,10 @@ public class EnrollmentService {
      * @return 수강 중인 강의 목록
      */
     public List<RespEnrollmentDto> findEnrollmentById(String userId) {
-        log.info("[Enrollment] 수강 목록 조회 - userId: {}", userId);
         List<Course> courseList = enrollmentMapper.selectEnrollmentById(userId);
-        log.info("[Enrollment] 조회 결과: {}건", courseList.size());
+
+        log.info("===== [Service] 수강 목록 조회 완료 - {}건 =====", courseList.size());
+
         return RespEnrollmentDto.fromEntity(courseList);
     }
 }

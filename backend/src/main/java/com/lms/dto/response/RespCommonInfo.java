@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/* 공통 응답 형식 */
+/** 공통 응답 형식 */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

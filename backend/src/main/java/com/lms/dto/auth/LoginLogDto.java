@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * DB 저장용 로그인 로그 DTO
- * @description 로그인 인증 완료 후 로그인 로그 테이블에 저장할 데이터를 담는 객체입니다.
+ * 로그인 인증 완료 후 로그인 로그 테이블에 저장할 데이터를 담는 객체입니다.
  */
 
 @Data

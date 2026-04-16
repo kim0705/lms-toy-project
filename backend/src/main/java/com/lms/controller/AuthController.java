@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
         @ApiResponse(responseCode = "401", description = "인증 실패",
                 content = @Content(examples = @ExampleObject(value = "{\"status\": 401, \"message\": \"아이디 또는 비밀번호가 일치하지 않습니다.\"}"))),
 })
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -51,10 +53,11 @@ public class AuthController {
     @Operation(summary = "로그인 시도", description = "학번(userId)과 비밀번호를 받아 JWT 토큰을 반환합니다.")
     @PostMapping("/signin")
     public ResponseEntity<RespCommonInfo<RespLoginDto>> signIn(@Valid @RequestBody ReqLoginDto reqLoginDto, HttpServletRequest request) {
+        log.debug("===== [Controller] 로그인 요청 - userId: {} =====", reqLoginDto.getUserId());
 
         RespLoginDto tokens = authService.signIn(reqLoginDto, request);
-        return ResponseEntity.ok(new RespCommonInfo<>(200, "성공", tokens));
 
+        return ResponseEntity.ok(new RespCommonInfo<>(200, "성공", tokens));
     }
 
     /**
@@ -68,10 +71,10 @@ public class AuthController {
     @Operation(summary = "토큰 재발급", description = "Refresh Token을 포함한 요청 정보를 받아 Access Token을 재발급 하여 JWT 토큰을 반환합니다.")
     @PostMapping("/refresh")
     public ResponseEntity<RespCommonInfo<RespLoginDto>> refresh(@RequestBody ReqRefreshTokenDto refreshTokenDto, HttpServletRequest request) {
+        log.debug("===== [Controller] 토큰 재발급 요청 =====");
 
         RespLoginDto tokens = authService.refresh(refreshTokenDto.getRefreshToken(), request);
 
         return ResponseEntity.ok(new RespCommonInfo<>(200, "성공", tokens));
-
     }
 }

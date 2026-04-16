@@ -3,12 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import * as S from './style';
 import { signIn } from '../../api/authApi';
 
-/**
- * [로그인 페이지]
- * 아이디와 비밀번호를 입력받아 로그인 요청을 처리합니다.
- * 로그인 성공 시 Access/Refresh Token을 로컬 스토리지에 저장하고 대시보드로 이동합니다.
- * 로그인 실패 시 에러 메시지를 화면에 표시합니다.
- */
+/* 로그인 페이지: 아이디/비밀번호 입력 후 JWT 토큰 발급 및 저장 */
 function LoginPage() {
     const navigate = useNavigate();
     const [userId, setUserId] = useState('');
@@ -16,11 +11,7 @@ function LoginPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    /**
-     * [로그인 폼 제출 핸들러]
-     * 서버에 로그인 요청을 보내고 토큰을 저장합니다.
-     * @param {React.FormEvent} e - 폼 제출 이벤트
-     */
+    /* 로그인 폼 제출: 서버에 요청 후 토큰 저장 */
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
