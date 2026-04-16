@@ -100,7 +100,7 @@ function LecturePage() {
                                             {lecture?.week}-{lecture?.chapter} {lecture?.title}
                                         </S.ItemTitle>
                                     </S.ItemMain>
-                                    <S.ActionBtn>다시보기</S.ActionBtn>
+                                    <S.ActionButton>다시보기</S.ActionButton>
                                 </S.ListItem>
                             ))
 
@@ -125,9 +125,9 @@ function LecturePage() {
                                         </S.ItemText>
                                     </S.ItemMain>
 
-                                    <S.ActionBtn variant={assignment?.subStatus === 'Y' ? 'success' : 'primary'}>
+                                    <S.ActionButton variant={assignment?.subStatus === 'Y' ? 'success' : 'primary'}>
                                         {assignment?.subStatus === 'Y' ? '수정하기' : '과제 제출'}
-                                    </S.ActionBtn>
+                                    </S.ActionButton>
 
                                 </S.ListItem>
                             ))
@@ -151,9 +151,9 @@ function LecturePage() {
                                         </S.ItemText>
                                     </S.ItemMain>
 
-                                    <S.ActionBtn variant={notice?.readStatus === 'Y' ? 'default' : 'primary'}>
+                                    <S.ActionButton variant={notice?.readStatus === 'Y' ? 'default' : 'primary'}>
                                         {notice?.readStatus === 'Y' ? '다시보기' : '확인하기'}
-                                    </S.ActionBtn>
+                                    </S.ActionButton>
 
                                 </S.ListItem>
                             ))

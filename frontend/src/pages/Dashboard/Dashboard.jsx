@@ -5,9 +5,9 @@ import { FaPlayCircle, FaCheckCircle, FaClock } from 'react-icons/fa';
 function Dashboard() {
 
     const coursesList = [
-        { id: 1, title: 'React 초급 마스터', instructor: '김철수 강사', progress: 75, lastStudy: '2024-03-15', image: 'https://via.placeholder.com/300x160?text=React' },
-        { id: 2, title: 'Emotion으로 스타일 잡기', instructor: '이영희 강사', progress: 100, lastStudy: '2024-02-28', image: 'https://via.placeholder.com/300x160?text=Emotion' },
-        { id: 3, title: 'Node.js 백엔드 입문', instructor: '박지성 강사', progress: 20, lastStudy: '2024-03-10', image: 'https://via.placeholder.com/300x160?text=NodeJS' },
+        { id: 1, title: 'React 초급 마스터', instructor: '김철수 강사', progress: 75, lastStudy: '2024-03-15', image: 'https://placehold.co/300x160?text=React' },
+        { id: 2, title: 'Emotion으로 스타일 잡기', instructor: '이영희 강사', progress: 100, lastStudy: '2024-02-28', image: 'https://placehold.co/300x160?text=Emotion' },
+        { id: 3, title: 'Node.js 백엔드 입문', instructor: '박지성 강사', progress: 20, lastStudy: '2024-03-10', image: 'https://placehold.co/300x160?text=NodeJS' },
     ];
     
     return (
