@@ -10,17 +10,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Tag(name = "과제 API", description = "과제 조회를 담당하는 컨트롤러입니다.")
-@RestController
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "과제 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 오류)")
 })
+@Slf4j
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/assignments")
 public class AssignmentController {
@@ -39,10 +41,10 @@ public class AssignmentController {
     @Operation(summary = "주차별 과제 조회", description = "과목 ID와 주차를 이용해 과제 목록을 가져옵니다.")
     @GetMapping("/{courseId}")
     public ResponseEntity<RespCommonInfo<List<RespAssignmentDto>>> getAssignmentInfoByWeek(@PathVariable int courseId, @RequestParam int week, @CurrentUser User user) {
+        log.debug("===== [Controller] 주차별 과제 조회 - courseId: {}, week: {} =====", courseId, week);
 
         List<RespAssignmentDto> assignmentList = assignmentService.findAssignmentInfoByWeek(courseId, user.getUserId(), week);
 
         return ResponseEntity.ok(new RespCommonInfo<>(200,"과제 정보 조회 성공", assignmentList));
-
     }
 }

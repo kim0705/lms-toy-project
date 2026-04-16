@@ -8,18 +8,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @Tag(name = "강의 API", description = "강의 정보 조회를 담당하는 컨트롤러입니다.")
-@RestController
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "강의 정보 조회 성공"),
         @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 오류)")
 })
+@Slf4j
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/lectures")
 public class LectureController {
@@ -38,6 +39,7 @@ public class LectureController {
     @Operation(summary = "강의 정보 조회", description = "과목 ID와 주차를 이용해 강의 리스트를 가져옵니다.")
     @GetMapping("/{courseId}")
     public ResponseEntity<RespCommonInfo<List<RespLectureDto>>> getLectureInfo(@PathVariable int courseId, @RequestParam(value = "week", required = false) Integer week) {
+        log.debug("===== [Controller] 강의 정보 조회 - courseId: {}, week: {} =====", courseId, week);
 
         List<RespLectureDto> lectureList = lectureService.findLectureInfoByWeek(courseId, week);
 

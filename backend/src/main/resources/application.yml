@@ -17,6 +17,7 @@ mybatis:
 logging:
   level:
     root: info
+    com.lms: debug
     com.lms.mapper: debug
 
 # Swagger(SpringDoc) 설정

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Access Token 재발급을 위한 Refresh Token ReqDTO
- * @description 만료된 Access Token을 대신하여 본인 인증을 수행할 Refresh Token을 전달합니다.
+ * 만료된 Access Token을 대신하여 본인 인증을 수행할 Refresh Token을 전달합니다.
  */
 
 @Data

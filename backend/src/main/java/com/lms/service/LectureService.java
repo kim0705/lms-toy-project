@@ -23,9 +23,10 @@ public class LectureService {
      * @return 강의 정보 목록
      */
     public List<RespLectureDto> findLectureInfoByWeek(int courseId, Integer week) {
-        log.info("[Lecture] 강의 조회 - courseId: {}, week: {}", courseId, week);
         List<Lecture> lectureList = lectureMapper.selectLectureInfoByWeek(courseId, week);
-        log.info("[Lecture] 조회 결과: {}건", lectureList.size());
+
+        log.info("===== [Service] 강의 조회 완료 - {}건 =====", lectureList.size());
+
         return RespLectureDto.fromEntity(lectureList);
     }
 }
