@@ -34,6 +34,13 @@ function Sidebar() {
         enabled: !!studentId,
     })
 
+    /* 로그아웃: 토큰 제거 후 로그인 페이지로 이동 */
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        navigate('/login');
+    };
+
     return (
         <S.SidebarContainer>
             {/* 상단 유저 정보 영역 */}
@@ -97,11 +104,12 @@ function Sidebar() {
                     </>
                 )}
             </S.NavSection>
-            <S.Divider />
-            <S.LogoutButton onClick={handleLogout}>
-                <FaSignOutAlt />
-                <span>로그아웃</span>
-            </S.LogoutButton>
+            <S.BottomArea>
+                <S.LogoutButton onClick={handleLogout}>
+                    <FaSignOutAlt />
+                    <span>로그아웃</span>
+                </S.LogoutButton>
+            </S.BottomArea>
         </S.SidebarContainer>
     );
 }

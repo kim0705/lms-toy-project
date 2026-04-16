@@ -134,7 +134,7 @@ export const ItemInfo = styled.span`
     transition: color 0.2s ease;
 `;
 
-export const ActionBtn = styled.button`
+export const ActionButton = styled.button`
     padding: 8px 14px;
     border-radius: 6px;
     border: 1px solid ${props => props.primary ? 'transparent' : props.theme.colors.border};
