@@ -23,7 +23,7 @@
           INNER JOIN LECTURES T2
               ON T1.ID = T2.COURSE_ID
           INNER JOIN NOTICES T3
-              ON T1.ID = T2.COURSE_ID
+              ON T3.COURSE_ID = T1.ID
          WHERE T1.ID = #{courseId}
            AND T2.WEEK = #{week}
            AND T3.INS_DT BETWEEN T2.START_DT AND T2.END_DT
@@ -32,65 +32,74 @@
 
     <!-- 과목별 공지사항 목록 조회 (페이징/검색) -->
     <select id="selectNoticeListByCourse" resultType="com.lms.dto.response.RespNoticeDto">
-        SELECT DISTINCT
-               T1.ID AS COURSE_ID
-             , T3.ID AS NOTICE_ID
-             , T3.TITLE
-             , T3.INS_ID AS WRITER
-             , T3.INS_DT AS CREATED_AT
+        SELECT T1.ID AS COURSE_ID
+             , T2.ID AS NOTICE_ID
+             , T2.TITLE
+             , T2.INS_ID AS WRITER
+             , T2.INS_DT AS CREATED_AT
           FROM COURSES T1
-          INNER JOIN LECTURES T2
-              ON T1.ID = T2.COURSE_ID
-          INNER JOIN NOTICES T3
-              ON T3.INS_DT BETWEEN T2.START_DT AND T2.END_DT
+          INNER JOIN NOTICES T2
+              ON T2.COURSE_ID = T1.ID
          WHERE T1.ID = #{courseId}
         <if test="req.keyword != null and req.keyword != ''">
             <choose>
                 <when test="req.searchType == 'title'">
-                    AND T3.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
+                    AND T2.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
                 </when>
                 <when test="req.searchType == 'content'">
-                    AND T3.CONTENT LIKE CONCAT('%', #{req.keyword}, '%')
+                    AND T2.CONTENT LIKE CONCAT('%', #{req.keyword}, '%')
                 </when>
                 <when test="req.searchType == 'writer'">
-                    AND T3.INS_ID LIKE CONCAT('%', #{req.keyword}, '%')
+                    AND T2.INS_ID LIKE CONCAT('%', #{req.keyword}, '%')
                 </when>
                 <otherwise>
-                    AND (T3.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
-                      OR T3.CONTENT LIKE CONCAT('%', #{req.keyword}, '%'))
+                    AND (T2.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
+                      OR T2.CONTENT LIKE CONCAT('%', #{req.keyword}, '%'))
                 </otherwise>
             </choose>
         </if>
-         ORDER BY T3.ID DESC
+         ORDER BY T2.ID DESC
          LIMIT #{req.size} OFFSET #{req.offset}
     </select>
 
     <!-- 과목별 공지사항 총 개수 조회 (페이징용) -->
     <select id="countNoticeListByCourse" resultType="long">
-        SELECT COUNT(DISTINCT T3.ID)
+        SELECT COUNT(T2.ID)
           FROM COURSES T1
-          INNER JOIN LECTURES T2
-              ON T1.ID = T2.COURSE_ID
-          INNER JOIN NOTICES T3
-              ON T3.INS_DT BETWEEN T2.START_DT AND T2.END_DT
+          INNER JOIN NOTICES T2
+              ON T2.COURSE_ID = T1.ID
          WHERE T1.ID = #{courseId}
         <if test="req.keyword != null and req.keyword != ''">
             <choose>
                 <when test="req.searchType == 'title'">
-                    AND T3.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
+                    AND T2.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
                 </when>
                 <when test="req.searchType == 'content'">
-                    AND T3.CONTENT LIKE CONCAT('%', #{req.keyword}, '%')
+                    AND T2.CONTENT LIKE CONCAT('%', #{req.keyword}, '%')
                 </when>
                 <when test="req.searchType == 'writer'">
-                    AND T3.INS_ID LIKE CONCAT('%', #{req.keyword}, '%')
+                    AND T2.INS_ID LIKE CONCAT('%', #{req.keyword}, '%')
                 </when>
                 <otherwise>
-                    AND (T3.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
-                      OR T3.CONTENT LIKE CONCAT('%', #{req.keyword}, '%'))
+                    AND (T2.TITLE LIKE CONCAT('%', #{req.keyword}, '%')
+                      OR T2.CONTENT LIKE CONCAT('%', #{req.keyword}, '%'))
                 </otherwise>
             </choose>
         </if>
+    </select>
+
+
+    <!-- 공지사항 단건 상세 조회 -->
+    <select id="selectNoticeDetail" resultType="com.lms.entity.Notice">
+        SELECT ID        AS ID
+             , COURSE_ID AS COURSE_ID
+             , TITLE     AS TITLE
+             , CONTENT   AS CONTENT
+             , INS_ID    AS INS_ID
+             , INS_DT    AS INS_DT
+          FROM NOTICES
+         WHERE COURSE_ID = #{courseId}
+           AND ID = #{noticeId}
     </select>
 
 </mapper>

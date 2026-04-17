@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Notice extends CommonInfo {
     private int id;
+    private int courseId;
     private String title;
     private String content;
 }

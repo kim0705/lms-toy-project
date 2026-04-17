@@ -18,20 +18,10 @@ function Sidebar() {
         { name: '공지사항', path: `/course/${courseId}/notice`, icon: <FaBullhorn /> },
     ];
 
-    /* 로그아웃 처리: 토큰 제거 후 로그인 페이지로 이동 */
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        navigate('/login');
-    };
-
-    const studentId = 1;
-
     /* 학생 수강 목록 가져오기 */
     const { data: coursesList } = useQuery({
-        queryKey: ['courses', studentId],
-        queryFn: () => getEnrollmentList(studentId),
-        enabled: !!studentId,
+        queryKey: ['courses'],
+        queryFn: () => getEnrollmentList(),
     })
 
     /* 로그아웃: 토큰 제거 후 로그인 페이지로 이동 */

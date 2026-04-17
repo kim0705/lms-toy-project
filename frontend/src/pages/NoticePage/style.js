@@ -148,7 +148,7 @@ export const Pagination = styled.div`
     justify-content: center;
     align-items: center;
     gap: 4px;
-    margin-top: 24px;
+    margin-top: 40px;
 `;
 
 export const PageButton = styled.button`

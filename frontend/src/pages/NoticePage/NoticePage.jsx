@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as S from './style';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getNoticeList } from '../../api/noticeApi';
 import LoadingDisplay from '../../components/common/LoadingDisplay/LoadingDisplay';
 
@@ -18,15 +18,17 @@ const PAGE_GROUP_SIZE = 5;
 /* 공지사항 게시판 페이지 */
 function NoticePage() {
     const { courseId } = useParams();
-    const [page, setPage] = useState(0);
+    const navigate = useNavigate();
+    const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
     const [searchType, setSearchType] = useState('all');
+    const [inputSearchType, setInputSearchType] = useState('all');
     const [keyword, setKeyword] = useState('');
     const [inputValue, setInputValue] = useState('');
 
     const { data, isLoading } = useQuery({
         queryKey: ['noticeList', courseId, page, size, keyword, searchType],
-        queryFn: () => getNoticeList(courseId, { page, size, keyword, searchType }),
+        queryFn: () => getNoticeList(courseId, { page: page - 1, size, keyword, searchType }),
         enabled: !!courseId,
         placeholderData: (prev) => prev,
     });
@@ -35,13 +37,14 @@ function NoticePage() {
     const totalCount = data?.totalCount ?? 0;
     const totalPages = Math.ceil(totalCount / size);
 
-    const pageGroupStart = Math.floor(page / PAGE_GROUP_SIZE) * PAGE_GROUP_SIZE;
-    const pageGroupEnd = Math.min(pageGroupStart + PAGE_GROUP_SIZE, totalPages);
+    const pageGroupStart = Math.floor((page - 1) / PAGE_GROUP_SIZE) * PAGE_GROUP_SIZE + 1;
+    const pageGroupEnd = Math.min(pageGroupStart + PAGE_GROUP_SIZE - 1, totalPages);
 
-    /* 검색 실행: 페이지 초기화 후 입력값을 키워드로 적용 */
+    /* 검색 실행: 페이지 초기화 후 입력값과 검색 유형을 적용 */
     const handleSearch = () => {
-        setPage(0);
+        setPage(1);
         setKeyword(inputValue);
+        setSearchType(inputSearchType);
     };
 
     /* Enter 키 입력 시 검색 실행 */
@@ -52,13 +55,12 @@ function NoticePage() {
     /* 페이지당 항목 수 변경 시 페이지 초기화 */
     const handleSizeChange = (e) => {
         setSize(Number(e.target.value));
-        setPage(0);
+        setPage(1);
     };
 
-    /* 검색 유형 변경 시 페이지 초기화 */
+    /* 검색 유형 변경: 입력값만 업데이트 (검색 버튼 클릭 시 적용) */
     const handleSearchTypeChange = (e) => {
-        setSearchType(e.target.value);
-        setPage(0);
+        setInputSearchType(e.target.value);
     };
 
     /* 날짜 포맷 변환: ISO 형식 → YYYY.MM.DD */
@@ -82,7 +84,7 @@ function NoticePage() {
                     ))}
                 </S.SizeSelect>
                 <S.SearchRight>
-                    <S.SearchTypeSelect value={searchType} onChange={handleSearchTypeChange}>
+                    <S.SearchTypeSelect value={inputSearchType} onChange={handleSearchTypeChange}>
                         {SEARCH_TYPE_OPTIONS.map(opt => (
                             <option key={opt.value} value={opt.value}>{opt.label}</option>
                         ))}
@@ -123,8 +125,8 @@ function NoticePage() {
                         </S.TableRow>
                     ) : (
                         notices.map((notice, index) => (
-                            <S.TableRow key={notice.noticeId} $hover>
-                                <S.TableTd $center>{totalCount - (page * size) - index}</S.TableTd>
+                            <S.TableRow key={notice.noticeId} $hover onClick={() => navigate(`/course/${courseId}/notice/${notice.noticeId}`)}>
+                                <S.TableTd $center>{totalCount - ((page - 1) * size) - index}</S.TableTd>
                                 <S.TableTd>{notice.title}</S.TableTd>
                                 <S.TableTd $center>{notice.writer}</S.TableTd>
                                 <S.TableTd $center>{formatDate(notice.createdAt)}</S.TableTd>
@@ -135,15 +137,15 @@ function NoticePage() {
             </S.Table>
 
             {/* 페이지네이션 */}
-            {totalPages > 1 && (
+            {totalPages > 0 && (
                 <S.Pagination>
                     <S.PageButton
                         onClick={() => setPage(pageGroupStart - 1)}
-                        disabled={pageGroupStart === 0}
+                        disabled={pageGroupStart === 1}
                     >
                         이전
                     </S.PageButton>
-                    {Array.from({ length: pageGroupEnd - pageGroupStart }, (_, i) => {
+                    {Array.from({ length: pageGroupEnd - pageGroupStart + 1 }, (_, i) => {
                         const pageNum = pageGroupStart + i;
                         return (
                             <S.PageButton
@@ -151,12 +153,12 @@ function NoticePage() {
                                 $active={pageNum === page}
                                 onClick={() => setPage(pageNum)}
                             >
-                                {pageNum + 1}
+                                {pageNum}
                             </S.PageButton>
                         );
                     })}
                     <S.PageButton
-                        onClick={() => setPage(pageGroupEnd)}
+                        onClick={() => setPage(pageGroupEnd + 1)}
                         disabled={pageGroupEnd >= totalPages}
                     >
                         다음

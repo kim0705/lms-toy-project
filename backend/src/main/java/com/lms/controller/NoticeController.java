@@ -4,6 +4,7 @@ import com.lms.annotation.CurrentUser;
 import com.lms.dto.request.ReqPageDto;
 import com.lms.dto.response.RespCommonInfo;
 import com.lms.dto.response.RespLectureNoticeDto;
+import com.lms.dto.response.RespNoticeDetailDto;
 import com.lms.dto.response.RespNoticeDto;
 import com.lms.dto.response.RespPageDto;
 import com.lms.entity.User;
@@ -67,5 +68,23 @@ public class NoticeController {
         RespPageDto<RespNoticeDto> result = noticeService.findNoticeByCourse(courseId, req);
 
         return ResponseEntity.ok(new RespCommonInfo<>(200, "공지 목록 조회 성공", result));
+    }
+
+    /**
+     * [공지사항 상세 조회]
+     * 공지사항 ID를 기반으로 상세 내용을 조회합니다.
+     * [Endpoint] GET /api/notices/{courseId}/{noticeId}
+     * @param courseId 과목 ID
+     * @param noticeId 공지사항 ID
+     * @return 성공 시 200 코드, 메세지와 함께 공지사항 상세 정보 반환
+     */
+    @Operation(summary = "공지사항 상세 조회", description = "공지사항 ID로 상세 내용을 조회합니다.")
+    @GetMapping("/{courseId}/{noticeId}")
+    public ResponseEntity<RespCommonInfo<RespNoticeDetailDto>> getNoticeDetail(@PathVariable int courseId, @PathVariable int noticeId) {
+        log.debug("===== [Controller] 공지사항 상세 조회 - courseId: {}, noticeId: {} =====", courseId, noticeId);
+
+        RespNoticeDetailDto result = noticeService.findNoticeDetail(courseId, noticeId);
+
+        return ResponseEntity.ok(new RespCommonInfo<>(200, "공지사항 상세 조회 성공", result));
     }
 }

@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import LecturePage from "./pages/LecturePage/LecturePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NoticePage from "./pages/NoticePage/NoticePage";
+import NoticeDetailPage from "./pages/NoticeDetailPage/NoticeDetailPage";
 
 /* 인증 보호 라우트: Access Token 없으면 로그인 페이지로 리다이렉트 */
 function ProtectedRoute({ children }) {
@@ -29,6 +30,7 @@ function App() {
                             <Route path="study" element={<LecturePage />} />
                             <Route path="report" element={<div>리포트 페이지</div>} />
                             <Route path="notice" element={<NoticePage />} />
+                            <Route path="notice/:noticeId" element={<NoticeDetailPage />} />
                         </Route>
                     </Route>
                 </Routes>
