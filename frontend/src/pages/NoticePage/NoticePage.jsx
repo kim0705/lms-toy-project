@@ -107,19 +107,20 @@ function NoticePage() {
                         <S.TableTh $width="80px">번호</S.TableTh>
                         <S.TableTh>제목</S.TableTh>
                         <S.TableTh $width="120px">작성자</S.TableTh>
+                        <S.TableTh $width="80px">조회수</S.TableTh>
                         <S.TableTh $width="120px">작성일</S.TableTh>
                     </S.TableRow>
                 </S.TableHead>
                 <S.TableBody>
                     {isLoading ? (
                         <S.TableRow>
-                            <S.TableTd colSpan={4}>
+                            <S.TableTd colSpan={5}>
                                 <LoadingDisplay type="loading" message="공지사항을 가져오고 있습니다." />
                             </S.TableTd>
                         </S.TableRow>
                     ) : notices.length === 0 ? (
                         <S.TableRow>
-                            <S.TableTd colSpan={4}>
+                            <S.TableTd colSpan={5}>
                                 <S.Empty>공지사항이 없습니다.</S.Empty>
                             </S.TableTd>
                         </S.TableRow>
@@ -129,6 +130,7 @@ function NoticePage() {
                                 <S.TableTd $center>{totalCount - ((page - 1) * size) - index}</S.TableTd>
                                 <S.TableTd>{notice.title}</S.TableTd>
                                 <S.TableTd $center>{notice.writer}</S.TableTd>
+                                <S.TableTd $center>{notice.viewCount}</S.TableTd>
                                 <S.TableTd $center>{formatDate(notice.createdAt)}</S.TableTd>
                             </S.TableRow>
                         ))

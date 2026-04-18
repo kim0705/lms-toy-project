@@ -10,6 +10,7 @@ import com.lms.mapper.NoticeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,11 +53,19 @@ public class NoticeService {
 
     /**
      * 공지사항 단건 상세 정보를 조회합니다.
+     * 조회 시 조회수 +1 및 읽음 로그를 기록합니다.
      * @param courseId 과목 ID
      * @param noticeId 공지사항 ID
+     * @param userId   조회한 사용자 ID
+     * @param clientIp 조회한 사용자 IP
      * @return 공지사항 상세 정보
      */
-    public RespNoticeDetailDto findNoticeDetail(int courseId, int noticeId) {
+    @Transactional
+    public RespNoticeDetailDto findNoticeDetail(int courseId, int noticeId, String userId, String clientIp) {
+        if (noticeMapper.insertNoticeLog(noticeId, userId, clientIp) > 0) {
+            noticeMapper.updateViewCount(noticeId);
+        }
+
         Notice notice = noticeMapper.selectNoticeDetail(courseId, noticeId);
 
         log.info("===== [Service] 공지사항 상세 조회 완료 - noticeId: {} =====", noticeId);
@@ -66,6 +75,7 @@ public class NoticeService {
                 .courseId(notice.getCourseId())
                 .title(notice.getTitle())
                 .content(notice.getContent())
+                .viewCount(notice.getViewCount())
                 .writer(notice.getInsId())
                 .createdAt(notice.getInsDt())
                 .build();

@@ -9,10 +9,12 @@ import com.lms.dto.response.RespNoticeDto;
 import com.lms.dto.response.RespPageDto;
 import com.lms.entity.User;
 import com.lms.service.NoticeService;
+import com.lms.util.UserAgentUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -80,10 +82,11 @@ public class NoticeController {
      */
     @Operation(summary = "공지사항 상세 조회", description = "공지사항 ID로 상세 내용을 조회합니다.")
     @GetMapping("/{courseId}/{noticeId}")
-    public ResponseEntity<RespCommonInfo<RespNoticeDetailDto>> getNoticeDetail(@PathVariable int courseId, @PathVariable int noticeId) {
+    public ResponseEntity<RespCommonInfo<RespNoticeDetailDto>> getNoticeDetail(@PathVariable int courseId, @PathVariable int noticeId, @CurrentUser User user, HttpServletRequest request) {
         log.debug("===== [Controller] 공지사항 상세 조회 - courseId: {}, noticeId: {} =====", courseId, noticeId);
 
-        RespNoticeDetailDto result = noticeService.findNoticeDetail(courseId, noticeId);
+        String clientIp = UserAgentUtil.extractClientIp(request);
+        RespNoticeDetailDto result = noticeService.findNoticeDetail(courseId, noticeId, user.getUserId(), clientIp);
 
         return ResponseEntity.ok(new RespCommonInfo<>(200, "공지사항 상세 조회 성공", result));
     }

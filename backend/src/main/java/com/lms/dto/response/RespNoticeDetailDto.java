@@ -32,4 +32,7 @@ public class RespNoticeDetailDto {
 
     @Schema(description = "작성일시")
     private LocalDateTime createdAt;
+
+    @Schema(description = "조회수")
+    private int viewCount;
 }

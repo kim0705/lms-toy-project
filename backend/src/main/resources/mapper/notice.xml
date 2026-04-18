@@ -37,6 +37,8 @@
              , T2.TITLE
              , T2.INS_ID AS WRITER
              , T2.INS_DT AS CREATED_AT
+             , T2.VIEW_COUNT
+             , T2.VIEW_COUNT AS VIEW_COUNT
           FROM COURSES T1
           INNER JOIN NOTICES T2
               ON T2.COURSE_ID = T1.ID
@@ -91,15 +93,45 @@
 
     <!-- 공지사항 단건 상세 조회 -->
     <select id="selectNoticeDetail" resultType="com.lms.entity.Notice">
-        SELECT ID        AS ID
-             , COURSE_ID AS COURSE_ID
-             , TITLE     AS TITLE
-             , CONTENT   AS CONTENT
-             , INS_ID    AS INS_ID
-             , INS_DT    AS INS_DT
+        SELECT ID
+             , COURSE_ID
+             , TITLE
+             , CONTENT
+             , VIEW_COUNT
+             , INS_ID
+             , INS_DT
           FROM NOTICES
          WHERE COURSE_ID = #{courseId}
            AND ID = #{noticeId}
     </select>
+
+    <!-- 공지사항 조회수 +1 -->
+    <update id="updateViewCount">
+        UPDATE NOTICES
+           SET VIEW_COUNT = VIEW_COUNT + 1
+         WHERE ID = #{noticeId}
+    </update>
+
+    <!-- 공지사항 읽음 로그 기록 (중복 시 무시) -->
+    <insert id="insertNoticeLog">
+        INSERT IGNORE INTO NOTICE_LOG( NOTICE_ID
+                                     , USER_ID
+                                     , INS_IP
+                                     , INS_ID
+                                     , INS_DT
+                                     , UPT_IP
+                                     , UPT_ID
+                                     , UPT_DT
+                                     ) VALUES (
+                                       #{noticeId}
+                                     , #{userId}
+                                     , #{clientIp}
+                                     , #{userId}
+                                     , NOW()
+                                     , #{clientIp}
+                                     , #{userId}
+                                     , NOW()
+                                     )
+    </insert>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.lms.util;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,28 @@ public class UserAgentUtil {
         result.put("deviceType", device);
 
         return result;
+    }
 
+    /**
+     * 클라이언트 실제 IP 추출
+     * 프록시 환경에서 X-Forwarded-For 등의 헤더를 순차 확인하여 실제 IP를 반환합니다.
+     * @param request HttpServletRequest
+     * @return 클라이언트 실제 IP 주소
+     */
+    public static String extractClientIp(HttpServletRequest request) {
+        String[] headers = {
+            "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP",
+            "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"
+        };
+
+        for (String header : headers) {
+            String ip = request.getHeader(header);
+            if (ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip)) {
+                return ip.split(",")[0].trim();
+            }
+        }
+
+        return request.getRemoteAddr();
     }
 
 }

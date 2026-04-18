@@ -19,4 +19,5 @@ public class Notice extends CommonInfo {
     private int courseId;
     private String title;
     private String content;
+    private int viewCount;
 }

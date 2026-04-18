@@ -35,6 +35,7 @@ function NoticeDetailPage() {
                 <S.Meta>
                     <span>{notice?.writer}</span>
                     <span>{formatDate(notice?.createdAt)}</span>
+                    <span>조회 {notice?.viewCount}</span>
                 </S.Meta>
                 <S.Divider />
                 <S.Content>{notice?.content}</S.Content>
