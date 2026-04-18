@@ -13,3 +13,9 @@ export const getNoticeList = async(courseId, params) => {
     const response = await instance.get(`/notices/${courseId}/list`, { params });
     return response;
 }
+
+/* 공지사항 단건 상세 조회 */
+export const getNoticeDetail = async(courseId, noticeId) => {
+    const response = await instance.get(`/notices/${courseId}/${noticeId}`);
+    return response;
+}

@@ -2,12 +2,15 @@ package com.lms.service;
 
 import com.lms.dto.request.ReqPageDto;
 import com.lms.dto.response.RespLectureNoticeDto;
+import com.lms.dto.response.RespNoticeDetailDto;
 import com.lms.dto.response.RespNoticeDto;
 import com.lms.dto.response.RespPageDto;
+import com.lms.entity.Notice;
 import com.lms.mapper.NoticeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,7 +45,39 @@ public class NoticeService {
     public RespPageDto<RespNoticeDto> findNoticeByCourse(int courseId, ReqPageDto req) {
         List<RespNoticeDto> notices = noticeMapper.selectNoticeListByCourse(courseId, req);
         Long totalCount = noticeMapper.countNoticeListByCourse(courseId, req);
+
         log.info("===== [Service] 과목별 공지 조회 완료 - {}건 =====", notices.size());
+
         return new RespPageDto<>(notices, totalCount, req.getPage(), req.getSize());
+    }
+
+    /**
+     * 공지사항 단건 상세 정보를 조회합니다.
+     * 조회 시 조회수 +1 및 읽음 로그를 기록합니다.
+     * @param courseId 과목 ID
+     * @param noticeId 공지사항 ID
+     * @param userId   조회한 사용자 ID
+     * @param clientIp 조회한 사용자 IP
+     * @return 공지사항 상세 정보
+     */
+    @Transactional
+    public RespNoticeDetailDto findNoticeDetail(int courseId, int noticeId, String userId, String clientIp) {
+        if (noticeMapper.insertNoticeLog(noticeId, userId, clientIp) > 0) {
+            noticeMapper.updateViewCount(noticeId);
+        }
+
+        Notice notice = noticeMapper.selectNoticeDetail(courseId, noticeId);
+
+        log.info("===== [Service] 공지사항 상세 조회 완료 - noticeId: {} =====", noticeId);
+
+        return RespNoticeDetailDto.builder()
+                .noticeId(notice.getId())
+                .courseId(notice.getCourseId())
+                .title(notice.getTitle())
+                .content(notice.getContent())
+                .viewCount(notice.getViewCount())
+                .writer(notice.getInsId())
+                .createdAt(notice.getInsDt())
+                .build();
     }
 }

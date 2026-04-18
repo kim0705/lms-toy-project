@@ -4,14 +4,17 @@ import com.lms.annotation.CurrentUser;
 import com.lms.dto.request.ReqPageDto;
 import com.lms.dto.response.RespCommonInfo;
 import com.lms.dto.response.RespLectureNoticeDto;
+import com.lms.dto.response.RespNoticeDetailDto;
 import com.lms.dto.response.RespNoticeDto;
 import com.lms.dto.response.RespPageDto;
 import com.lms.entity.User;
 import com.lms.service.NoticeService;
+import com.lms.util.UserAgentUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -67,5 +70,24 @@ public class NoticeController {
         RespPageDto<RespNoticeDto> result = noticeService.findNoticeByCourse(courseId, req);
 
         return ResponseEntity.ok(new RespCommonInfo<>(200, "공지 목록 조회 성공", result));
+    }
+
+    /**
+     * [공지사항 상세 조회]
+     * 공지사항 ID를 기반으로 상세 내용을 조회합니다.
+     * [Endpoint] GET /api/notices/{courseId}/{noticeId}
+     * @param courseId 과목 ID
+     * @param noticeId 공지사항 ID
+     * @return 성공 시 200 코드, 메세지와 함께 공지사항 상세 정보 반환
+     */
+    @Operation(summary = "공지사항 상세 조회", description = "공지사항 ID로 상세 내용을 조회합니다.")
+    @GetMapping("/{courseId}/{noticeId}")
+    public ResponseEntity<RespCommonInfo<RespNoticeDetailDto>> getNoticeDetail(@PathVariable int courseId, @PathVariable int noticeId, @CurrentUser User user, HttpServletRequest request) {
+        log.debug("===== [Controller] 공지사항 상세 조회 - courseId: {}, noticeId: {} =====", courseId, noticeId);
+
+        String clientIp = UserAgentUtil.extractClientIp(request);
+        RespNoticeDetailDto result = noticeService.findNoticeDetail(courseId, noticeId, user.getUserId(), clientIp);
+
+        return ResponseEntity.ok(new RespCommonInfo<>(200, "공지사항 상세 조회 성공", result));
     }
 }

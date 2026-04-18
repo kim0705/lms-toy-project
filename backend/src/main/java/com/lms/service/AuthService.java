@@ -67,7 +67,7 @@ public class AuthService {
         /* 정보 추출 */
         String userAgent = request.getHeader("User-Agent");
         Map<String, String> userAgentDetails = UserAgentUtil.extractUserAgentInfo(userAgent);
-        String clientIp = getClientIp(request);
+        String clientIp = UserAgentUtil.extractClientIp(request);
 
         /* User-Agent에서 추출한 값 변수에 담기 */
         String deviceType = userAgentDetails.get("deviceType");
@@ -78,7 +78,7 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
 
-        log.info("===== [Service] 로그인 완료 - User: {}, Device: {}, IP: {} =====", user.getUserId(), deviceType, getClientIp(request));
+        log.info("===== [Service] 로그인 완료 - User: {}, Device: {}, IP: {} =====", user.getUserId(), deviceType, clientIp);
 
         /* 로그인 이력 생성 */
         loginLogMapper.insertLoginLog(LoginLogDto.of(user.getUserId(), deviceType, osName, browserName, userAgent, clientIp));
@@ -87,44 +87,6 @@ public class AuthService {
         refreshTokenService.saveRefreshToken(RefreshTokenDto.of(user.getUserId(), refreshToken, deviceType, refreshExpirationTime));
 
         return new RespLoginDto(accessToken, refreshToken);
-    }
-
-    /**
-     * 클라이언트 실제 IP 추출
-     * 프록시 서버 등을 거칠 경우를 대비하여 헤더를 순차적으로 확인합니다.
-     * - 직접 접속 시: request.getRemoteAddr() 사용
-     * - 프록시(Nginx, AWS ALB 등) 거칠 시: 'X-Forwarded-For' 등의 헤더에서 실제 IP 추출
-     * - 보안 및 운영 환경(L4, Proxy) 대응을 위한 방어 코드입니다.
-     * @param request HttpServletRequest
-     * @return 클라이언트의 실제 IP 주소
-     */
-    private String getClientIp(HttpServletRequest request) {
-        /* 1. 프록시 서버를 거칠 경우 실제 IP가 담기는 표준 헤더 확인 */
-        String ip = request.getHeader("X-Forwarded-For");
-
-        /* 2. 각 제조사별/설정별 특이 헤더 순차 확인 (null, 빈값, unknown 방어) */
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP"); /* 웹로직 등 특정 WAS용 */
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-
-        /* 3. 모든 헤더에 정보가 없다면 최종적으로 호출자의 IP를 가져옴 */
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        } else {
-            /* X-Forwarded-For에 IP가 여러 개일 경우 첫 번째 IP가 진짜 클라이언트 IP */
-            ip = ip.split(",")[0].trim();
-        }
-
-        return ip;
     }
 
     /**
